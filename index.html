@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>云南旅行随身攻略 · 2026年12月</title>
+<style>
+:root{
+  --blue:#1a5276; --blue2:#2e86c1; --light:#eaf2f8; --bg:#f0f4f8;
+  --card:#fff; --text:#222; --gray:#888; --line:#e3e9ef;
+  --accent:#e67e22;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;padding-bottom:70px}
+header{background:linear-gradient(135deg,#1a5276,#27ae60);color:#fff;padding:18px 16px 16px;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:19px;font-weight:600}
+header .sub{font-size:12.5px;opacity:.85;margin-top:4px}
+header .count{margin-top:8px;font-size:12px;background:rgba(255,255,255,.15);display:inline-block;padding:3px 10px;border-radius:12px}
+main{padding:12px;max-width:640px;margin:0 auto}
+.tab-page{display:none}
+.tab-page.active{display:block}
+.card{background:var(--card);border-radius:12px;margin-bottom:12px;box-shadow:0 1px 4px rgba(26,82,118,.08);overflow:hidden}
+.card .hd{padding:10px 14px;border-bottom:1px solid var(--line);font-weight:600;font-size:15px;color:var(--blue);display:flex;align-items:center;gap:6px}
+.card .bd{padding:12px 14px}
+.badge{display:inline-block;background:var(--light);color:var(--blue);border-radius:6px;padding:2px 8px;font-size:12px;margin-right:6px}
+.badge.warn{background:#fdebd0;color:#b9770e}
+.day-chip-bar{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch}
+.day-chip{flex:0 0 auto;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;color:#555;cursor:pointer;white-space:nowrap}
+.day-chip.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.day-title{font-size:16px;font-weight:700;color:var(--blue);margin:6px 2px 10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.timeline{position:relative;padding-left:0}
+.item{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:none}
+.item .t{flex:0 0 52px;color:var(--blue2);font-weight:600;font-size:13px;padding-top:2px}
+.item .c{flex:1}
+.item .c b{font-weight:600;display:block;font-size:14.5px}
+.item .c .d{font-size:13px;color:#555;margin-top:2px}
+.item .c .m{font-size:12px;color:var(--gray);margin-top:2px}
+.pname{cursor:pointer}
+.pname:active{opacity:.65}
+.pico{font-size:11px;margin-left:3px;background:var(--light);border-radius:8px;padding:1px 6px;vertical-align:1px}
+.tk{display:inline-block;background:#fef9e7;color:#b9770e;border:1px solid #f5e6c8;border-radius:6px;padding:1px 8px;font-size:12px;margin-top:4px;margin-right:4px}
+.pr{display:inline-block;background:#eafaf1;color:#1e8449;border:1px solid #d5f5e3;border-radius:6px;padding:1px 8px;font-size:12px;margin-top:4px}
+.navrow{margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+.navbtn{display:inline-flex;align-items:center;gap:4px;border:none;border-radius:14px;padding:4px 12px;font-size:12.5px;cursor:pointer;text-decoration:none}
+.navbtn.g{background:var(--light);color:var(--blue)}
+.navbtn.a{background:#f5f5f5;color:#333}
+/* 介绍弹层 */
+.sheet-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;display:none;align-items:flex-end}
+.sheet-mask.show{display:flex}
+.sheet{background:#fff;width:100%;max-width:640px;margin:0 auto;border-radius:16px 16px 0 0;max-height:80vh;display:flex;flex-direction:column;animation:up .25s ease}
+@keyframes up{from{transform:translateY(50px);opacity:.5}to{transform:translateY(0);opacity:1}}
+.sheet .grab{width:40px;height:4px;background:#ddd;border-radius:2px;margin:8px auto 0;flex:0 0 auto}
+.sheet-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 16px 2px;flex:0 0 auto}
+.sheet-hd .cat{font-size:11px;color:#1e8449;background:#eafaf1;border-radius:10px;padding:2px 8px;display:inline-block}
+.sheet-hd .nm{font-size:18px;font-weight:700;margin-top:5px}
+.sheet-x{border:none;background:#f2f2f2;border-radius:50%;width:30px;height:30px;font-size:13px;cursor:pointer;flex:0 0 auto}
+.sheet-bd{padding:4px 16px 10px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.sheet-bd .intro{font-size:14px;color:#333;padding:8px 0 2px}
+.sheet-row{display:flex;gap:8px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.sheet-row:last-child{border-bottom:none}
+.sheet-row .k{flex:0 0 74px;color:var(--blue);font-weight:600}
+.sheet-ft{display:flex;gap:10px;padding:10px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);flex:0 0 auto}
+.sheet-ft .navbtn{flex:1;justify-content:center;padding:8px 0;font-size:14px}
+/* 美食列表 */
+.food-grp .gt{font-size:13px;color:var(--blue);font-weight:600;margin:12px 14px 2px}
+.food-row{padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.food-row:last-child{border-bottom:none}
+.food-row:active{background:var(--light)}
+.food-row .fn{font-size:14.5px;font-weight:600}
+.food-row .ft{font-size:12px;color:var(--gray);margin-top:2px}
+.food-row .fp{flex:0 0 auto;font-size:12px;color:var(--accent);font-weight:600;text-align:right;max-width:45%}
+.check-grp{margin-bottom:6px}
+.check-grp .gt{font-size:13px;color:var(--blue);font-weight:600;margin:10px 2px 4px}
+label.ck{display:flex;align-items:center;gap:10px;padding:8px 2px;border-bottom:1px solid #f2f5f8;cursor:pointer;font-size:14px}
+label.ck input{width:18px;height:18px;accent-color:var(--blue2);flex:0 0 auto}
+label.ck .done{color:#aaa;text-decoration:line-through}
+.progress{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:4px 0 8px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--blue2),#5dade2);border-radius:3px;transition:width .3s}
+.tel-card{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--line)}
+.tel-card:last-child{border-bottom:none}
+.tel-card .n{font-size:14px}
+.tel-card .n small{display:block;color:var(--gray);font-size:12px}
+.tel-card a{background:var(--light);color:var(--blue);text-decoration:none;border-radius:14px;padding:4px 14px;font-size:13px;font-weight:600}
+.phrase{padding:9px 14px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.phrase:last-child{border-bottom:none}
+.phrase .jp{font-size:14.5px}
+.phrase .zh{font-size:12px;color:var(--gray)}
+.phrase:active{background:var(--light)}
+table.bd2{width:100%;border-collapse:collapse;font-size:13px}
+table.bd2 th,table.bd2 td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+table.bd2 th{background:var(--light);color:var(--blue)}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:10}
+.bottom .tab{flex:1;text-align:center;padding:8px 0 6px;font-size:11px;color:#999;cursor:pointer}
+.bottom .tab .ico{display:block;font-size:20px;line-height:1.3}
+.bottom .tab.active{color:var(--blue);font-weight:600}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;font-size:13px;padding:8px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:60}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏔️ 云南旅行随身攻略</h1>
+  <div class="sub">2026.12.1-12.8 · 昆明·大理·丽江·香格里拉 · 家庭3-4人</div>
+  <div class="count" id="countdown">距离出发:计算中…</div>
+</header>
+
+<main>
+  <!-- ============ 行程 ============ -->
+  <div class="tab-page active" id="page-plan">
+    <div class="card">
+      <div class="hd">🗺️ 行程总览</div>
+      <div class="bd">
+        <div style="margin-bottom:6px"><span class="badge">✈️ 去</span>12/1(二)首都JD5157 杭州17:50→昆明21:25</div>
+        <div style="margin-bottom:6px"><span class="badge">🛫 回</span>12/8(二)祥鹏8L9935 昆明08:35→杭州11:20</div>
+        <div style="margin-bottom:6px"><span class="badge">🏠 出发地</span>兰溪 12:30出发→金华站高铁→杭州东→地铁19号线→萧山T3</div>
+        <div style="margin-bottom:6px"><span class="badge warn">🧳 无托运!</span>手提7kg 20×30×40,建议加购20kg</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:6px">🏨 昆明2晚→大理2晚→丽江2晚→香格里拉1晚 · 海拔逐级爬升:1890→1970→2400→3280m</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">🏨 住宿推荐(按位置)</div>
+      <div class="bd">
+        <table class="bd2">
+          <tr><th>城市</th><th>位置</th><th>参考价/间</th></tr>
+          <tr><td>昆明×2晚</td><td>翠湖/南屏街附近</td><td>¥200-400</td></tr>
+          <tr><td>大理×2晚</td><td>古城内 或 才村海景</td><td>¥180-350</td></tr>
+          <tr><td>丽江×2晚</td><td>古城南门附近</td><td>¥150-300</td></tr>
+          <tr><td>香格里拉×1晚</td><td>独克宗附近 ⚠️要有暖气</td><td>¥200-400</td></tr>
+        </table>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">12月淡季参考价,3-4人订2间或家庭房;香格里拉夜里-8℃,没暖气的别订</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">💡 小提示</div>
+      <div class="bd" style="font-size:13px;color:#555">点行程里带 <span class="pico">📖</span> 的名字可看景点介绍、门票和开放时间;🎫=门票价 💰=花费。买火车票看「🚄交通」页;⚠️12/4晚20:00记得抢玉龙雪山大索道票!</div>
+    </div>
+    <div class="day-chip-bar" id="dayChips"></div>
+    <div id="dayDetail"></div>
+  </div>
+
+  <!-- ============ 交通 ============ -->
+  <div class="tab-page" id="page-trans">
+    <div class="card">
+      <div class="hd">🚄 车票购买总表(照着买)</div>
+      <div class="bd">
+        <table class="bd2" id="trainTable"></table>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">票价(二等):金华⇄杭州东¥60-100 · 昆明→大理¥145 · 大理→丽江¥52-60 · 丽江→香格里拉¥49-70 · 香格里拉→昆明¥245-290</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">🚕 市内交通与包车</div>
+      <div class="bd" style="font-size:13.5px">
+        <div>✈️ 昆明机场⇄市区:打车40-50分钟¥100/车(夜航/早班机首选)</div>
+        <div style="margin-top:6px">🚄 大理站→古城:打车20-30分钟¥30-40</div>
+        <div style="margin-top:6px">🚄 丽江站→古城:打车20分钟¥30(行李可让客栈三轮车接)</div>
+        <div style="margin-top:6px">🚄 香格里拉站→独克宗:打车15分钟¥20-30</div>
+        <div style="margin-top:6px">🌊 洱海环湖:包车5座¥400-500/天</div>
+        <div style="margin-top:6px">🏔️ 玉龙雪山:拼车¥40-60/人 或 包车¥300-400/车</div>
+        <div style="margin-top:6px">🌲 普达措:包车往返¥200-300/车</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">⚠️ 购票提醒</div>
+      <div class="bd" style="font-size:13.5px">
+        <div>① 12306提前15天开售,按上表"开售日"当天买</div>
+        <div style="margin-top:6px">② 全家乘车人实名信息提前录入12306</div>
+        <div style="margin-top:6px">③ 12/7香格里拉→昆明班次少!开售当天就买;买不到直达→两段中转(香格里拉→丽江→昆明)或改飞</div>
+        <div style="margin-top:6px">④ 买"金华站"(沪昆高铁),不是金华南站</div>
+        <div style="margin-top:6px">⑤ 兰溪站只剩T7786一对普速车,赶飞机不合适,别买</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 美食 ============ -->
+  <div class="tab-page" id="page-food">
+    <div class="card">
+      <div class="hd">🍜 美食清单(点开看详情)</div>
+      <div class="bd" style="padding:0" id="foodList"></div>
+    </div>
+    <div class="card">
+      <div class="hd">🗣️ 点餐技巧</div>
+      <div class="bd">
+        <div style="font-size:13.5px">🌶️ 云南菜偏辣偏咸,全家点菜统一说一句"<b>微辣/不辣</b>"即可,都是熟食无生食顾虑</div>
+        <div style="font-size:13.5px;margin-top:6px">🍄 菌子火锅12月只有<b>冷冻菌</b>(鲜菌季是7-9月);高原上少喝酒、多喝汤水</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 清单 ============ -->
+  <div class="tab-page" id="page-check">
+    <div class="card">
+      <div class="hd">✅ 行李清单(打勾自动保存)</div>
+      <div class="bd">
+        <div class="progress"><i id="progBar" style="width:0%"></i></div>
+        <div style="font-size:12px;color:var(--gray);margin-bottom:4px" id="progText">0/0 已勾选</div>
+        <div id="checkList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 工具 ============ -->
+  <div class="tab-page" id="page-tools">
+    <div class="card">
+      <div class="hd">🏔️ 海拔速查与高反应对</div>
+      <div class="bd">
+        <table class="bd2">
+          <tr><th>地点</th><th>海拔</th></tr>
+          <tr><td>昆明</td><td>1890m</td></tr>
+          <tr><td>大理</td><td>1970m</td></tr>
+          <tr><td>丽江古城</td><td>2400m</td></tr>
+          <tr><td>香格里拉</td><td>3280m</td></tr>
+          <tr><td>普达措属都湖</td><td>3500m</td></tr>
+          <tr><td>玉龙雪山大索道上站</td><td>4506m(栈道至4680m)</td></tr>
+        </table>
+        <div style="font-size:13px;margin-top:10px">
+          <div>✅ <b>预防</b>:慢动作不跑跳、多喝热水、氧气罐丽江买(¥15-25)、香格里拉第一晚不洗澡、保暖防感冒</div>
+          <div style="margin-top:6px">⚠️ <b>轻微头痛气短</b>:正常,休息+吸氧+布洛芬</div>
+          <div style="margin-top:6px">🆘 <b>呕吐/胸闷/意识模糊</b>:立即下撤低海拔+就医,别硬扛</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">🆘 应急电话(点一下直接拨)</div>
+      <div class="bd" style="padding:0">
+        <div class="tel-card"><div class="n">报警<small>110</small></div><a href="tel:110">拨打</a></div>
+        <div class="tel-card"><div class="n">急救<small>120</small></div><a href="tel:120">拨打</a></div>
+        <div class="tel-card"><div class="n">铁路客服<small>12306</small></div><a href="tel:12306">拨打</a></div>
+        <div class="tel-card"><div class="n">首都航空<small>95375</small></div><a href="tel:95375">拨打</a></div>
+        <div class="tel-card"><div class="n">祥鹏航空<small>95326</small></div><a href="tel:95326">拨打</a></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">🗣️ 点餐说法(点一下复制)</div>
+      <div class="bd" style="padding:0" id="phraseList"></div>
+    </div>
+  </div>
+
+  <!-- ============ 预算 ============ -->
+  <div class="tab-page" id="page-budget">
+    <div class="card">
+      <div class="hd">🎫 门票明细(1人)</div>
+      <div class="bd">
+        <table class="bd2" id="ticketTable"></table>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">合计约¥508/人(不含演出/游船等可选);60-69岁老人多数半价、70+免票,刷身份证核验;⚠️大索道需小程序抢票</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="hd">💴 预算总表(人均·人民币)</div>
+      <div class="bd">
+        <table class="bd2" id="budgetTable"></table>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">家庭3-4人总计 ≈ 人均×人数;不含购物、演出、行李加购</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="bottom">
+  <div class="tab active" data-t="plan"><span class="ico">📅</span>行程</div>
+  <div class="tab" data-t="trans"><span class="ico">🚄</span>交通</div>
+  <div class="tab" data-t="food"><span class="ico">🍜</span>美食</div>
+  <div class="tab" data-t="check"><span class="ico">✅</span>清单</div>
+  <div class="tab" data-t="tools"><span class="ico">🧰</span>工具</div>
+  <div class="tab" data-t="budget"><span class="ico">💴</span>预算</div>
+</div>
+
+<!-- 景点/美食介绍弹层 -->
+<div class="sheet-mask" id="sheetMask">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-hd">
+      <div>
+        <span class="cat" id="shCat"></span>
+        <div class="nm" id="shNm"></div>
+      </div>
+      <button class="sheet-x" id="sheetX">✕</button>
+    </div>
+    <div class="sheet-bd" id="shBd"></div>
+    <div class="sheet-ft" id="shFt"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== 行程数据(pr=花费,显示💰) ====================
+const DAYS = [
+{id:0, emoji:'✈️', title:'Day 0 · 12/1(二) 赴昆明', items:[
+  {t:'12:30', b:'兰溪→金华站', d:'打车约30-40分钟;或家人送', nav:'金华站', pr:'¥60-80/车'},
+  {t:'13:20', b:'金华→杭州东 高铁', d:'建议买13:00-13:30出发车次,45-55分钟;⚠️买"金华站"不是金华南', nav:'杭州东站', pr:'¥60-100'},
+  {t:'14:30', b:'地铁19号线→萧山T3', d:'机场快线约25分钟,比打车稳', nav:'杭州萧山国际机场T3航站楼', pr:'¥9'},
+  {t:'15:00', b:'值机安检', d:'全家证件检查;手提行李7kg 20×30×40', nav:''},
+  {t:'17:50', b:'起飞 首都JD5157', d:'杭州→昆明,飞行3小时35分,准点率97%', nav:''},
+  {t:'21:25', b:'落地昆明长水', d:'取手提行李快', nav:'昆明长水国际机场', poi:'changshui'},
+  {t:'22:00', b:'打车进市区入住', d:'约40-50分钟,4人打车划算;地铁末班可能赶不上', nav:'翠湖公园', pr:'¥100/车'},
+  {t:'23:00', b:'早点休息', d:'明天喂海鸥要早起', nav:''},
+]},
+{id:1, emoji:'🕊️', title:'Day 1 · 12/2(三) 红嘴鸥→大理·洱海日落', items:[
+  {t:'08:30', b:'翠湖公园喂红嘴鸥', d:'12月海鸥从西伯利亚来过冬,上午最活跃;买鸥粮别喂面包', nav:'翠湖公园', poi:'cuihu', pr:'免费(鸥粮¥5-10)'},
+  {t:'10:00', b:'云南大学东陆校区', d:'百年校园,银杏大道拍照', nav:'云南大学', poi:'yunda', pr:'免费'},
+  {t:'11:30', b:'午餐:过桥米线', d:'建新园/桥香园,鸡汤现烫', nav:'桥香园过桥米线', poi:'guoqiao', pr:'人均¥20-45'},
+  {t:'13:30', b:'昆明站→大理 动车', d:'约2小时;⚠️买"昆明站"出发,别买成昆明南', nav:'昆明站', pr:'¥145'},
+  {t:'15:30', b:'抵达大理·古城客栈', d:'打车约20-30分钟', nav:'大理古城', poi:'daligucheng', pr:'打车¥30-40/车'},
+  {t:'16:45', b:'才村码头日落+海鸥', d:'洱海边夕阳喂鸥,超治愈', nav:'才村码头', poi:'erhai', pr:'免费(打车¥20-30/车)'},
+  {t:'19:00', b:'晚餐:白族酸辣鱼', d:'洱海鱼,酸辣开胃', nav:'大理古城', poi:'suanyu', pr:'人均¥50-80'},
+  {t:'20:30', b:'夜逛大理古城', d:'洋人街、人民路', nav:'大理古城'},
+]},
+{id:2, emoji:'🌊', title:'Day 2 · 12/3(四) 洱海环湖一日', items:[
+  {t:'09:00', b:'包车出发', d:'5座约¥400-500/天,提前一天订;12月风大别骑电动车', nav:'', pr:'¥400-500/车/天'},
+  {t:'09:45', b:'喜洲古镇', d:'转角楼、喜洲粑粑、金黄稻田', nav:'喜洲古镇', poi:'xizhou', pr:'免费(严家大院¥25)'},
+  {t:'11:30', b:'磻溪村S弯', d:'洱海网红海景,海鸥多', nav:'磻溪村', poi:'erhai', pr:'免费'},
+  {t:'12:30', b:'午餐:白族菜', d:'砂锅鱼/黄焖鸡', nav:'喜洲古镇', pr:'人均¥50-80'},
+  {t:'13:45', b:'双廊古镇', d:'海景一线;南诏风情岛船票¥50可选', nav:'双廊古镇', poi:'shuanglang', pr:'免费(船票¥50可选)'},
+  {t:'15:30', b:'理想邦', d:'免费"圣托里尼"风,下午光线最好', nav:'理想邦文化旅游区', poi:'lixiangbang', pr:'免费'},
+  {t:'17:30', b:'回古城晚餐', d:'自由活动', nav:'大理古城'},
+]},
+{id:3, emoji:'🏯', title:'Day 3 · 12/4(五) 三塔→丽江', items:[
+  {t:'08:30', b:'崇圣寺三塔', d:'大理地标,约1.5-2小时;电瓶车¥35可选', nav:'崇圣寺三塔', poi:'santower'},
+  {t:'11:00', b:'取行李退房', d:'', nav:''},
+  {t:'12:30', b:'大理→丽江 动车', d:'约1.5小时', nav:'大理站', pr:'¥52-60'},
+  {t:'14:00', b:'丽江古城客栈入住', d:'打车约20分钟;石板路行李可让客栈三轮车接', nav:'丽江古城', poi:'lijianggucheng', pr:'打车¥30/车'},
+  {t:'15:00', b:'黑龙潭公园', d:'免费,雪山倒影最佳机位', nav:'黑龙潭公园', poi:'heilongtan', pr:'免费'},
+  {t:'16:30', b:'四方街·大水车', d:'木府¥40可选', nav:'丽江古城四方街', poi:'mufu'},
+  {t:'18:30', b:'晚餐:腊排骨火锅', d:'12月最对味!象山市场附近', nav:'象山市场', poi:'lapigu', pr:'人均¥60-90'},
+  {t:'20:00', b:'⚠️抢大索道票!', d:'微信小程序「丽江旅游集团」,全家实名提前录入,选12点后时段更稳', nav:'玉龙雪山', poi:'yulong', pr:'¥140/人'},
+]},
+{id:4, emoji:'🏔️', title:'Day 4 · 12/5(六) 玉龙雪山4680', items:[
+  {t:'06:45', b:'起床·穿最厚的衣服', d:'帽子手套都带上', nav:''},
+  {t:'07:30', b:'出发去雪山', d:'拼车¥40-60/人或包车¥300-400/车,约40分钟', nav:'玉龙雪山', poi:'yulong', pr:'拼车¥40-60/人'},
+  {t:'08:20', b:'进山费+大索道检票', d:'进山费¥100(60-69岁半价,70+免),索道¥140含环保车', nav:'玉龙雪山', poi:'yulong', pr:'¥100+¥140'},
+  {t:'09:00', b:'索道上4506m', d:'8分钟直升,感觉气短就吸氧', nav:'玉龙雪山冰川公园', poi:'yulong'},
+  {t:'09:30', b:'栈道→4680m', d:'约40-60分钟,量力而行;长辈可留4506平台', nav:'玉龙雪山4680米', poi:'yulong'},
+  {t:'11:30', b:'索道下山+午餐', d:'自带巧克力+保温杯热水最实惠', nav:'', pr:'人均¥30-50'},
+  {t:'13:00', b:'蓝月谷', d:'冰川融水蓝绿湖泊,免费;电瓶车¥50可选', nav:'蓝月谷', poi:'lanyuegu', pr:'免费(电瓶车¥50可选)'},
+  {t:'15:30', b:'返回丽江休息', d:'', nav:'丽江古城'},
+  {t:'18:30', b:'晚餐:黑山羊火锅', d:'暖身', nav:'丽江古城', poi:'heishanyang', pr:'人均¥60-90'},
+  {t:'20:30', b:'(可选)丽江千古情', d:'室内演出适合全家', nav:'丽江千古情景区', pr:'约¥280-310'},
+]},
+{id:5, emoji:'⛰️', title:'Day 5 · 12/6(日) 丽江→香格里拉', items:[
+  {t:'07:50', b:'动车→香格里拉', d:'约1.5小时,丽香铁路穿雪山过峡谷', nav:'丽江站', pr:'¥49-70'},
+  {t:'09:25', b:'抵达香格里拉站', d:'海拔3276m!打车去独克宗约15分钟', nav:'香格里拉站', poi:'dukezong', pr:'打车¥20-30/车'},
+  {t:'10:00', b:'客栈放行李', d:'⚠️高原节奏:动作放慢、多喝热水、不跑不跳', nav:'独克宗古城', poi:'dukezong'},
+  {t:'10:30', b:'松赞林寺', d:'现场买票¥55;云南最大藏传佛教寺院', nav:'松赞林寺', poi:'songzanlin'},
+  {t:'13:00', b:'午餐:牦牛肉火锅', d:'+酥油茶+青稞饼', nav:'独克宗古城', poi:'maoniu', pr:'人均¥80-120'},
+  {t:'14:30', b:'独克宗+大转经筒', d:'世界最大转经筒,全家合力转三圈', nav:'独克宗古城龟山公园', poi:'dukezong', pr:'免费'},
+  {t:'16:30', b:'回酒店休息', d:'第一天上高原,不安排剧烈活动', nav:''},
+  {t:'18:30', b:'晚餐:藏餐', d:'酥油茶、糌粑、藏式酸奶', nav:'独克宗古城', pr:'人均¥60-100'},
+  {t:'20:30', b:'⚠️不洗澡或速洗', d:'防感冒+防高反,早休息', nav:''},
+]},
+{id:6, emoji:'🌲', title:'Day 6 · 12/7(一) 普达措→返昆明', items:[
+  {t:'07:30', b:'早餐', d:'', nav:''},
+  {t:'08:00', b:'普达措国家公园', d:'包车约40分钟;淡季门票¥130-138含观光车,60+半价', nav:'普达措国家公园', poi:'pudacuo', pr:'包车¥200-300/车'},
+  {t:'08:45', b:'属都湖环湖栈道', d:'3.3km,12月雪景+湖面薄冰', nav:'普达措国家公园', poi:'pudacuo'},
+  {t:'11:15', b:'回市区午餐', d:'', nav:'独克宗古城', pr:'人均¥40-60'},
+  {t:'13:30', b:'动车→昆明', d:'直达约4.5-5.5小时;⚠️班次少开售就买;买不到两段中转或改飞', nav:'昆明站', pr:'¥245-290'},
+  {t:'18:30', b:'抵达昆明·入住', d:'', nav:'昆明市区'},
+  {t:'19:30', b:'南强街夜市+鲜花饼', d:'嘉华现烤旗舰店在附近', nav:'南强街', poi:'nanqiang', pr:'免费'},
+  {t:'22:00', b:'收拾行李称重', d:'特产装托运箱≤20kg,早睡', nav:''},
+]},
+{id:7, emoji:'🛬', title:'Day 7 · 12/8(二) 早班机返程', items:[
+  {t:'05:50', b:'起床', d:'', nav:''},
+  {t:'06:10', b:'打车去长水机场', d:'约40-50分钟;怕早起就前一晚住机场附近', nav:'昆明长水国际机场', poi:'changshui', pr:'¥100/车'},
+  {t:'07:00', b:'值机安检', d:'手提7kg 20×30×40,羽绒服穿身上', nav:''},
+  {t:'08:35', b:'起飞 祥鹏8L9935', d:'飞行2小时45分,准点率100%', nav:''},
+  {t:'11:20', b:'落地杭州萧山', d:'', nav:'杭州萧山国际机场'},
+  {t:'12:00', b:'地铁19号线→杭州东', d:'约25分钟', nav:'杭州东站', pr:'¥9'},
+  {t:'13:00', b:'杭州东→金华 高铁', d:'建议买13:00-13:30出发车次,45-55分钟', nav:'金华站', pr:'¥60-100'},
+  {t:'14:15', b:'金华→兰溪', d:'打车30-40分钟(或家人接);约15:00到家', nav:'', pr:'¥60-80/车'},
+  {t:'备选', b:'家人萧山机场直接接', d:'开车约2小时15分,12:00出发14:15到家', nav:''},
+]},
+];
+
+// ==================== 景点/美食资料库 ====================
+// cat: spot景点 / food美食; tk:门票(行程里显示🎫小标签); hr:开放时间; tip:贴士; price:参考价
+const POIS={
+// ---- 景点 ----
+cuihu:{cat:'spot', n:'翠湖公园', tk:'免费', hr:'全天',
+  intro:'昆明市中心的免费公园,每年11月-次年3月,成千上万只红嘴鸥从西伯利亚飞来过冬,湖面上白茫茫一片,是昆明冬天最治愈的画面。',
+  tip:'上午海鸥最活跃;买鸥粮喂(¥5-10),别喂面包(对海鸥不好);湖边有卖鸥粮的小摊'},
+yunda:{cat:'spot', n:'云南大学(东陆校区)', tk:'免费', hr:'全天(门口扫码登记)',
+  intro:'百年老校,法式建筑+古树参天,12月银杏大道金黄铺地,离翠湖步行5分钟。',
+  tip:'从翠湖步行可达;校园不大,30-40分钟逛完'},
+changshui:{cat:'spot', n:'昆明长水国际机场', tk:'-', hr:'全天',
+  intro:'昆明长水机场,地铁6号线连接市区(约40分钟),打车到市区约40-50分钟¥100左右。',
+  tip:'早班机(08:35)建议06:10前出发;地铁6号线首班约06:20,怕赶不及就打车或住机场附近'},
+daligucheng:{cat:'spot', n:'大理古城', tk:'免费', hr:'全天',
+  intro:'苍山脚下、洱海之滨的白族古城,棋盘式街道,洋人街、人民路最有味道。城门上看苍山云卷云舒。',
+  tip:'古城内步行;住宿选古城内或才村码头(海景);12月早晚冷,晚上逛穿羽绒服'},
+erhai:{cat:'spot', n:'洱海(才村码头/S弯)', tk:'免费', hr:'全天',
+  intro:'云南第二大湖,12月也有红嘴鸥。才村码头看日落、磻溪村S弯拍照,都是经典机位。',
+  tip:'环湖120km,家庭建议包车;12月湖边风大,帽子围巾安排上'},
+xizhou:{cat:'spot', n:'喜洲古镇', tk:'免费(严家大院¥25可选)', hr:'全天',
+  intro:'白族民居保存最完好的古镇,转角楼是网红机位,冬天金黄稻田+白族院落,喜洲粑粑必吃。',
+  tip:'现烤喜洲粑粑咸甜各来一个;严家大院是白族大宅,想细看再买票'},
+shuanglang:{cat:'spot', n:'双廊古镇', tk:'免费(南诏风情岛船票¥50可选)', hr:'全天',
+  intro:'洱海东岸一线海景古镇,杨丽萍太阳宫外观打卡,随便一个巷口走出去就是洱海。',
+  tip:'海景餐厅贵,拍拍照就行;风情岛可去可不去'},
+lixiangbang:{cat:'spot', n:'理想邦', tk:'免费', hr:'约9:00-18:00',
+  intro:'洱海边的"圣托里尼"风格园区,白墙蓝顶,下午光线拍照最好。',
+  tip:'免费入园,旅拍机构多;淡季人少好出片'},
+santower:{cat:'spot', n:'崇圣寺三塔', tk:'¥73-75(电瓶车¥35可选)', hr:'7:30-18:30',
+  intro:'大理地标,三座古塔倒映水中是明信片画面。背靠苍山,前面广场开阔,寺院依山而建。',
+  tip:'60+半价;景区不大,1.5-2小时够;塔不能登'},
+lijianggucheng:{cat:'spot', n:'丽江古城(大研)', tk:'免费', hr:'全天',
+  intro:'世界文化遗产,纳西族古城,四方街、大水车、小桥流水。2019年起已不收古城维护费。',
+  tip:'石板路拖行李费劲,让客栈三轮车接;淡季客栈¥150-300/间'},
+mufu:{cat:'spot', n:'木府', tk:'木府¥40(古城本身免费)', hr:'约8:30-17:30',
+  intro:'纳西土司的府邸,"北有故宫,南有木府",了解纳西历史文化的好地方。',
+  tip:'在古城内,感兴趣再买票;傍晚光线好'},
+heilongtan:{cat:'spot', n:'黑龙潭公园', tk:'免费', hr:'约8:00-18:00',
+  intro:'丽江古城北边的公园,五孔桥+玉龙雪山倒影,是拍雪山倒影的最佳机位。',
+  tip:'刷身份证免费进;晴天上午倒影最清晰'},
+yulong:{cat:'spot', n:'玉龙雪山', tk:'进山费¥100 + 大索道¥140(含环保车)', hr:'索道约7:30-16:30(按时段检票)',
+  intro:'纳西族神山,13座雪峰连绵。冰川公园大索道8分钟从3356m直升4506m,栈道走到4680m,12月雪景最盛。',
+  tip:'⚠️每晚20:00微信小程序「丽江旅游集团」抢票(唯一官方渠道),提前录好全家实名,选12点后时段更稳;氧气丽江买¥15-25/罐;60-69岁进山费半价、70+免;错过检票时段票作废'},
+lanyuegu:{cat:'spot', n:'蓝月谷', tk:'免费(进山费已含;电瓶车¥50可选)', hr:'约9:00-17:00',
+  intro:'玉龙雪山脚下的冰川融水湖群,湖水蓝绿色像翡翠,栈道平缓好走,拍照圣地。',
+  tip:'在进山费范围内免费;栈道步行即可,不必坐电瓶车'},
+songzanlin:{cat:'spot', n:'松赞林寺', tk:'现场¥55(网上套票¥90)', hr:'约8:00-18:00',
+  intro:'云南最大的藏传佛教寺院,"小布达拉宫",金顶在雪山下极震撼,寺前拉姆央措湖可拍全景。',
+  tip:'⚠️现场买55元的票(网上90含观光车讲解,打车去没必要);60+半价¥27;寺内顺时针走、不拍佛像'},
+dukezong:{cat:'spot', n:'独克宗古城', tk:'免费', hr:'全天',
+  intro:'1300多年历史的藏式古城,"月光城"。龟山公园上的大转经筒是世界最大转经筒,全家合力转三圈祈福。',
+  tip:'海拔3300m,爬龟山公园台阶要慢;住宿选古城附近,安静方便'},
+pudacuo:{cat:'spot', n:'普达措国家公园', tk:'¥138含观光车(淡季约¥130)', hr:'冬季约8:30-16:00(15:30停止入园)',
+  intro:'香格里拉的高原明珠,属都湖环湖栈道3.3km,12月林海雪原+湖面薄冰,安静得像童话。',
+  tip:'60+门票半价(观光车费不免);全程3-4小时;栈道平缓但海拔3500m,走慢点;氧气随身带'},
+napahai:{cat:'spot', n:'纳帕海', tk:'免费', hr:'全天',
+  intro:'香格里拉的高原季节性湖泊,12月是观鸟季,成群黑颈鹤在此越冬,湖光雪山同框。',
+  tip:'环湖免费;湖边骑马项目另收费,想骑先谈好价;离市区15分钟车程'},
+nanqiang:{cat:'spot', n:'南强街夜市', tk:'免费', hr:'约18:00-23:00(夜市)',
+  intro:'昆明最热闹的夜市街区,小锅米线、烤豆腐、鲜榨果汁一路吃过去,嘉华鲜花饼现烤店在附近。',
+  tip:'晚上去;现烤鲜花饼趁热吃,可以现场买盒装带走'},
+// ---- 美食 ----
+guoqiao:{cat:'food', n:'过桥米线(建新园/桥香园)', price:'人均¥20-45', hr:'约10:00-21:00', tags:'昆明必吃·全家都爱',
+  intro:'滚烫鸡汤现烫米线和配料,仪式感拉满。米线、肉片、鹌鹑蛋依次下锅,汤鲜味美,老幼皆宜。',
+  tip:'先下生料再下米线;汤很烫,孩子老人注意吹凉'},
+qiguoji:{cat:'food', n:'汽锅鸡', price:'人均¥40-70', hr:'约10:30-21:00', tags:'汤鲜肉嫩·滋补',
+  intro:'云南名菜,蒸汽锅隔水蒸鸡,汤清味鲜,冬天喝一碗浑身暖。',
+  tip:'点一份全家分,配炒时蔬刚好'},
+xianhuabing:{cat:'food', n:'嘉华鲜花饼(现烤)', price:'¥4-8/个', hr:'约9:00-22:00', tags:'昆明特产·现烤最佳',
+  intro:'玫瑰花瓣入馅,现烤的皮酥馅香,比盒装好吃十倍。南强街和机场都有店。',
+  tip:'现烤趁热吃;带回家的买盒装,机场也能买'},
+shaodoufu:{cat:'food', n:'石屏烤豆腐', price:'¥10-20/份', hr:'夜市/街边', tags:'小吃·蘸水香',
+  intro:'云南街头烧烤的灵魂,小方块豆腐烤到鼓泡,蘸干辣椒面或腐乳蘸水。',
+  tip:'南强街夜市就有;吃不惯蘸水可以说"不辣"'},
+junzi:{cat:'food', n:'菌子火锅', price:'人均¥60-120', hr:'约11:00-22:00', tags:'⚠️12月只有冻菌',
+  intro:'云南招牌,野生菌煮火锅。但⚠️12月鲜菌已下市,现在吃的都是冷冻菌,风味打折。',
+  tip:'想吃正宗鲜菌子宴,改7-9月来;12月可以不安排'},
+suanyu:{cat:'food', n:'白族酸辣鱼', price:'人均¥50-80', hr:'约11:00-21:00', tags:'大理招牌·酸辣开胃',
+  intro:'洱海鱼配木瓜酸汤,酸辣鲜香,是白族待客菜。鱼肉嫩,汤泡饭一绝。',
+  tip:'点菜说"微辣"更稳妥;洱海鱼当天现杀最鲜'},
+shaguoyu:{cat:'food', n:'砂锅鱼', price:'人均¥50-80', hr:'约11:00-21:00', tags:'大理·清淡派',
+  intro:'砂锅慢炖的洱海鱼,汤浓肉嫩,不吃辣的首选。',
+  tip:'和酸辣鱼二选一即可'},
+rushan:{cat:'food', n:'烤乳扇', price:'¥5-10/个', hr:'街头/古城', tags:'大理小吃·奶香',
+  intro:'牛奶做成扇子形,烤软后抹玫瑰酱卷起来,奶香浓郁,大理独一份。',
+  tip:'现烤现吃;凉了会变硬'},
+xizhoubaba:{cat:'food', n:'喜洲粑粑', price:'¥10-15/个', hr:'约8:00-18:00', tags:'喜洲必吃·咸甜两派',
+  intro:'炭火烤制的大饼,咸的夹肉末葱花,甜的夹玫瑰糖,外酥里软。',
+  tip:'咸甜各买一个全家分;现烤的才好吃'},
+ersi:{cat:'food', n:'饵丝/饵块', price:'¥10-20/份', hr:'早餐/全天', tags:'大理人的早餐',
+  intro:'大米做成的饵丝,口感软糯,配肉酱汤头。饵块烤着吃夹酱,是本地人的日常。',
+  tip:'早餐店都有;分量足,两人一碗尝尝鲜'},
+lapigu:{cat:'food', n:'腊排骨火锅', price:'人均¥60-90', hr:'约11:00-22:00', tags:'丽江必吃·12月最对味',
+  intro:'丽江名物,腊排骨咸香,煮进火锅越炖越鲜。冬天一家人围炉,暖到心里。',
+  tip:'象山市场附近店多;腊排骨偏咸,汤煮开先喝一碗,配薄荷叶'},
+heishanyang:{cat:'food', n:'黑山羊火锅', price:'人均¥60-90', hr:'约11:00-22:00', tags:'丽江·暖身',
+  intro:'丽江黑山羊带皮炖煮,肉质紧实,汤底鲜浓,高原冬天的能量补给站。',
+  tip:'和腊排骨二选一;蘸水可以让店家调不辣'},
+naxikaoyu:{cat:'food', n:'纳西烤鱼', price:'人均¥40-70', hr:'约17:00-23:00', tags:'丽江·夜市烧烤',
+  intro:'纳西风味的烤鱼,香辣入味,配上烤饵块和风花雪月啤酒,丽江夜生活标配。',
+  tip:'夜市烧烤摊都有;不吃辣提前说'},
+jidou:{cat:'food', n:'鸡豆凉粉', price:'¥10-15/份', hr:'约9:00-20:00', tags:'纳西小吃',
+  intro:'丽江本地豆子做的凉粉,煎着吃或拌着吃,滑嫩爽口。',
+  tip:'古城里很多摊;煎的比凉拌的更适合冬天'},
+maoniu:{cat:'food', n:'牦牛肉火锅', price:'人均¥80-120', hr:'约11:00-22:00', tags:'香格里拉必吃·肉量扎实',
+  intro:'高原牦牛肉,肉香浓郁有嚼劲,铜锅煮着配青菜,是上高原最补的一顿。',
+  tip:'肉点一斤起;配青稞饼蘸汤;高原上慢吃,别撑'},
+suyoucha:{cat:'food', n:'酥油茶+青稞饼', price:'人均¥20-40', hr:'藏餐馆全天', tags:'藏式日常',
+  intro:'酥油茶咸香暖身,青稞饼扎实顶饱,是藏族人家的日常,上高原喝一碗特别舒服。',
+  tip:'第一次喝酥油茶可能不习惯,少要点试试;咸口的'},
+zangyogurt:{cat:'food', n:'藏式酸奶', price:'¥10-15/碗', hr:'约10:00-20:00', tags:'甜品·酸度上头',
+  intro:'藏区牦牛奶酸奶,浓稠酸香,撒白糖或蜂蜜吃。',
+  tip:'比普通酸奶酸得多,第一次少买'},
+};
+// 美食分组
+const FOODGROUPS=[
+['昆明',['guoqiao','qiguoji','xianhuabing','shaodoufu','junzi']],
+['大理',['suanyu','shaguoyu','rushan','xizhoubaba','ersi']],
+['丽江',['lapigu','heishanyang','naxikaoyu','jidou']],
+['香格里拉',['maoniu','suyoucha','zangyogurt']],
+];
+
+// ==================== 渲染行程 ====================
+const dayChips=document.getElementById('dayChips');
+const dayDetail=document.getElementById('dayDetail');
+let curDay=1;
+function navUrl(q, apple){
+  if(!q) return '';
+  const g='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+  const a='https://maps.apple.com/?q='+encodeURIComponent(q);
+  return apple? a : g;
+}
+function renderChips(){
+  dayChips.innerHTML=DAYS.map(d=>`<div class="day-chip ${d.id===curDay?'active':''}" data-d="${d.id}">${d.emoji} ${d.id===0?'D0':'D'+d.id}</div>`).join('');
+  dayChips.querySelectorAll('.day-chip').forEach(c=>c.onclick=()=>{curDay=+c.dataset.d;renderChips();renderDay();window.scrollTo({top:0,behavior:'smooth'});});
+}
+function renderDay(){
+  const d=DAYS.find(x=>x.id===curDay);
+  dayDetail.innerHTML=`<div class="card"><div class="bd">
+    <div class="day-title">${d.emoji} ${d.title}</div>
+    <div class="timeline">${d.items.map(it=>{
+      const p=POIS[it.poi];
+      return `
+      <div class="item">
+        <div class="t">${it.t}</div>
+        <div class="c">
+          ${p?`<b class="pname" data-poi="${it.poi}">${it.b}<span class="pico">📖</span></b>`:`<b>${it.b}</b>`}
+          <div class="d">${it.d}</div>
+          ${(p&&p.tk&&p.tk!=='-')||it.pr?`<div class="m">${p&&p.tk&&p.tk!=='-'?`<span class="tk">🎫 ${p.tk}</span>`:''}${it.pr?`<span class="pr">💰 ${it.pr}</span>`:''}</div>`:''}
+          ${it.nav?`<div class="navrow"><a class="navbtn g" href="${navUrl(it.nav)}" target="_blank">🗺️ Google导航</a><a class="navbtn a" href="${navUrl(it.nav,1)}" target="_blank">🍎 苹果地图</a></div>`:''}
+        </div>
+      </div>`;}).join('')}
+    </div></div></div>`;
+  dayDetail.querySelectorAll('.pname').forEach(el=>el.onclick=()=>openSheet(el.dataset.poi));
+}
+renderChips();renderDay();
+
+// ==================== 介绍弹层 ====================
+const sheetMask=document.getElementById('sheetMask');
+function openSheet(k){
+  const p=POIS[k]; if(!p) return;
+  document.getElementById('shCat').textContent=p.cat==='food'?'🍜 美食':'📖 景点';
+  document.getElementById('shNm').textContent=p.n;
+  const row=(icon,label,val)=>`<div class="sheet-row"><div class="k">${icon} ${label}</div><div>${val}</div></div>`;
+  let rows=[`<div class="intro">${p.intro}</div>`];
+  if(p.tk&&p.tk!=='-') rows.push(row('🎫','门票',p.tk));
+  if(p.price) rows.push(row('💰','参考价',p.price));
+  if(p.hr) rows.push(row('🕐','时间',p.hr));
+  if(p.tags) rows.push(row('🍽️','特色',p.tags));
+  if(p.tip) rows.push(row('💡','贴士',p.tip));
+  document.getElementById('shBd').innerHTML=rows.join('');
+  const q=p.n;
+  document.getElementById('shFt').innerHTML=`<a class="navbtn g" target="_blank" href="${navUrl(q)}">🗺️ Google导航</a><a class="navbtn a" target="_blank" href="${navUrl(q,1)}">🍎 苹果地图</a>`;
+  sheetMask.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeSheet(){
+  sheetMask.classList.remove('show');
+  document.body.style.overflow='';
+}
+sheetMask.onclick=e=>{if(e.target===sheetMask)closeSheet();};
+document.getElementById('sheetX').onclick=closeSheet;
+
+// ==================== 美食列表 ====================
+const foodList=document.getElementById('foodList');
+foodList.innerHTML=FOODGROUPS.map(([g,keys])=>`
+  <div class="food-grp"><div class="gt">${g}</div>
+  ${keys.map(k=>{const p=POIS[k];return `
+    <div class="food-row" data-poi="${k}">
+      <div><div class="fn">${p.n}</div><div class="ft">${p.tags||''}</div></div>
+      <div class="fp">${p.price||''}</div>
+    </div>`;}).join('')}
+  </div>`).join('');
+foodList.querySelectorAll('.food-row').forEach(el=>el.onclick=()=>openSheet(el.dataset.poi));
+
+// ==================== 清单 ====================
+const CHECKGROUPS=[
+['🪪 证件',['全家身份证(实名购票必需)','机票行程单(手机)','6段火车票(12306)','酒店预订单(手机)','旅游保险单','现金少许(微信支付宝通用)']],
+['🧥 衣物(高原防寒)',['羽绒服(香格里拉/雪山必需)','抓绒/毛衣','保暖内衣','帽子+手套+围巾','防滑运动鞋(石板路+雪山栈道)','墨镜(雪地反光)','防晒霜SPF50+','润唇膏+护手霜(极干燥)']],
+['💊 药品+高原装备',['感冒药+肠胃药+创可贴','布洛芬(高反头痛)','葡萄糖口服液','氧气罐(到丽江买¥15-25!)','保温杯(多喝热水)','充电宝(山顶掉电快)','晕车药(环洱海/山路)']],
+['📋 行前任务',['订机票(11月中前)','加购托运20kg(航司App)','按交通总表买6段火车票(香格里拉→昆明开售就买)','订7晚住宿(推荐位置见行程页)','12/4晚20:00抢大索道票!','小程序「丽江旅游集团」录全家实名','订洱海环湖包车','订玉龙雪山车/纯玩小团']],
+['🛍️ 特产备忘',['鲜花饼(嘉华现烤)','普洱茶(品牌店)','牦牛肉干(超市认品牌)','乳扇/饵块少买(需冷藏)','玉石翡翠别碰!','装箱称重:托运≤20kg']],
+];
+function renderCheck(){
+  const wrap=document.getElementById('checkList');
+  wrap.innerHTML=CHECKGROUPS.map((g,gi)=>`
+    <div class="check-grp"><div class="gt">${g[0]}</div>
+    ${g[1].map((x,xi)=>`<label class="ck"><input type="checkbox" data-k="${gi}-${xi}"><span>${x}</span></label>`).join('')}
+    </div>`).join('');
+  const boxes=[...wrap.querySelectorAll('input')];
+  const store=JSON.parse(localStorage.getItem('ynCheckState')||'{}');
+  boxes.forEach(b=>{ b.checked=!!store[b.dataset.k];
+    b.onchange=()=>{store[b.dataset.k]=b.checked;localStorage.setItem('ynCheckState',JSON.stringify(store));updProg();};
+    if(b.checked)b.nextElementSibling.classList.add('done');
+    b.addEventListener('change',()=>b.nextElementSibling.classList.toggle('done',b.checked));
+  });
+  updProg();
+  function updProg(){
+    const n=boxes.filter(b=>b.checked).length;
+    document.getElementById('progBar').style.width=(n/boxes.length*100)+'%';
+    document.getElementById('progText').textContent=`${n}/${boxes.length} 已勾选`;
+  }
+}
+renderCheck();
+
+// ==================== 车票购买总表 ====================
+const TRAINS=[
+['12/1','金华→杭州东','13:00-13:30','11/17开售'],
+['12/2','昆明→大理','13:30-14:00','11/18开售'],
+['12/4','大理→丽江','12:30-13:00','11/20开售'],
+['12/6','丽江→香格里拉','07:42/07:50','11/22开售'],
+['12/7','香格里拉→昆明','13:00-14:00直达','11/23⚠️班次少!'],
+['12/8','杭州东→金华','13:00-13:30','11/24开售'],
+];
+document.getElementById('trainTable').innerHTML='<tr><th>日期</th><th>区间</th><th>买几点</th><th>开售日</th></tr>'+TRAINS.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
+
+// ==================== 点餐说法 ====================
+const PHRASES=[
+['微辣','点菜说这句,辣度温和'],
+['不辣','完全不吃辣时用'],
+['少盐','云南菜偏咸,清淡口用'],
+['打包','没吃完带走'],
+['有老人,麻烦安排安静点的位置','家庭用餐常用'],
+['氧气瓶哪里有卖?','丽江市区药店有,¥15-25'],
+];
+const pl=document.getElementById('phraseList');
+pl.innerHTML=PHRASES.map(p=>`<div class="phrase" data-j="${p[0]}"><div><div class="jp">${p[0]}</div><div class="zh">${p[1]}</div></div><span style="color:#bbb;font-size:12px">复制</span></div>`).join('');
+pl.querySelectorAll('.phrase').forEach(el=>el.onclick=()=>{
+  navigator.clipboard.writeText(el.dataset.j).then(()=>toast('已复制:'+el.dataset.j)).catch(()=>toast('复制失败'));
+});
+
+// ==================== 门票明细 ====================
+const TICKETS=[
+['崇圣寺三塔','¥73-75'],
+['玉龙雪山(进山费+大索道)','¥240'],
+['松赞林寺(现场)','¥55'],
+['普达措(含观光车)','¥130-138'],
+['木府(可选)','¥40'],
+['虎跳峡(可选)','¥45'],
+['印象丽江(可选)','¥280'],
+];
+document.getElementById('ticketTable').innerHTML='<tr><th>景点</th><th>门票(元)</th></tr>'+TICKETS.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+
+// ==================== 预算 ====================
+const BUDGET=[
+['机票(杭州⇄昆明)','840'],['火车票(6段)','650-730'],['住宿7晚(2间)','650-1,000'],['门票','500-650'],['餐饮(8天)','800-1,050'],['包车/市内交通','250-400'],['旅游保险','30-60'],['合计','约3,700-4,800'],
+];
+document.getElementById('budgetTable').innerHTML='<tr><th>项目</th><th>人均(元)</th></tr>'+BUDGET.map((r,i)=>`<tr${i===BUDGET.length-1?' style="font-weight:700;background:var(--light)"':''}><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('');
+
+// ==================== Tab切换 ====================
+document.querySelectorAll('.bottom .tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.bottom .tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+t.dataset.t).classList.add('active');
+  window.scrollTo({top:0});
+});
+
+// ==================== 倒计时 ====================
+function countdown(){
+  const start=new Date('2026-12-01T17:50:00+08:00');
+  const now=new Date();
+  const diff=start-now;
+  if(diff<=0){document.getElementById('countdown').textContent='已出发,玩得开心!';return;}
+  const d=Math.floor(diff/86400000);
+  document.getElementById('countdown').textContent=`距离出发还有 ${d} 天`;
+}
+countdown();
+
+// ==================== Toast ====================
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),1600);
+}
+</script>
+</body>
+</html>
