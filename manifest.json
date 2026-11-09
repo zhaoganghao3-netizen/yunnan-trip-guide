@@ -1,0 +1,14 @@
+{
+  "name": "云南旅行随身攻略",
+  "short_name": "云南攻略",
+  "description": "2026年12月昆明·大理·丽江·香格里拉9天家庭行程",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f0f4f8",
+  "theme_color": "#1a5276",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
