@@ -721,7 +721,7 @@ const TICKETS=[
  ['丽江千古情/印象丽江(可选)',280],
 ];
 const TK_BASE=TICKETS.filter(r=>!/可选/.test(r[0])).reduce((s,r)=>s+r[1],0);
-document.getElementById('ticketTable').innerHTML='<tr><th>景点</th><th>门票(元)</th></tr>'+TICKETS.map(r=>`<tr${/可选/.test(r[0])?' style="color:var(--gray)"':''}><td>${r[0]}</td><td>¥'+r[1]+'</td></tr>`).join('');
+document.getElementById('ticketTable').innerHTML='<tr><th>景点</th><th>门票(元)</th></tr>'+TICKETS.map(r=>`<tr${/可选/.test(r[0])?' style="color:var(--gray)"':''}><td>${r[0]}</td><td>¥${r[1]}</td></tr>`).join('');
 
 // ==================== 预算 ====================
 const BUDGET=[
