@@ -108,6 +108,9 @@ table.bd2 th{background:var(--light);color:var(--blue)}
 .toast.show{opacity:1}
 .chip-date{font-size:11px;opacity:.75;margin-left:1px}
 .day-chip.is-today{border-color:#a9dfbf;background:#eafaf1;color:#1e8449;font-weight:600}
+.mode-bar{display:flex;gap:8px;margin:0 2px 10px}
+.mode-btn{flex:1;border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:7px 0;font-size:13px;color:#555;cursor:pointer}
+.mode-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
 @media (prefers-color-scheme: dark){
   :root{--blue:#8fc1e3;--blue2:#5dade2;--light:#1e2a33;--bg:#0f1519;--card:#161e24;--text:#e8e8e8;--gray:#9aa5ad;--line:#243039}
   header{background:linear-gradient(135deg,#12303f,#1e6b46)}
@@ -168,6 +171,10 @@ table.bd2 th{background:var(--light);color:var(--blue)}
       <div class="hd">💡 小提示</div>
       <div class="bd" style="font-size:13px;color:#555">点行程里带 <span class="pico">📖</span> 的名字可看景点介绍、门票和开放时间;🎫=门票价 💰=花费。买火车票看「🚄交通」页;⚠️12/4晚20:00抢12/5玉龙雪山索道票,抢10:00-11:00场(早上要先看日照金山)</div>
     </div>
+    <div class="mode-bar" id="modeBar">
+      <button class="mode-btn" data-mode="0">🚄 动车+包车</button>
+      <button class="mode-btn" data-mode="1">🚗 自驾版</button>
+    </div>
     <div class="day-chip-bar" id="dayChips"></div>
     <div id="dayDetail"></div>
   </div>
@@ -206,7 +213,7 @@ table.bd2 th{background:var(--light);color:var(--blue)}
           <tr><td>香格里拉→飞来寺</td><td>❌ 不建议</td><td>214国道约4h,白马雪山垭口,冬季结冰、落石</td></tr>
           <tr><td>香格里拉→昆明</td><td>❌ 不建议</td><td>630km、8.5h,司机太累</td></tr>
         </table>
-        <div style="font-size:12.5px;margin-top:8px;color:#b9770e">🚗 自驾版建议:大理租2天(环海+开去丽江还车)+丽江租1天(雪山),香格里拉和梅里继续包车;城际长途坐动车更省心</div>
+        <div style="font-size:12.5px;margin-top:8px;color:#b9770e">🚗 行程页顶部可切换「自驾版」;建议:大理租2天(环海+开去丽江还车)+丽江租1天(雪山),香格里拉和梅里继续包车;城际长途坐动车更省心</div>
         <div style="font-size:12px;color:var(--gray);margin-top:6px">租车:昆明机场/大理站/丽江机场都有网点;12月经济型¥120-200/天、SUV¥250-350/天;异地还车大理→丽江¥300-500;建议买全险、备防滑链;驾龄需满1年(部分平台2年)</div>
       </div>
     </div>
@@ -461,6 +468,31 @@ const DAYS = [
 ]},
 ];
 
+// ==================== 自驾版逐日安排(备选,覆盖 Day 2/3) ====================
+const DRIVE={
+2:[
+  {t:'08:30', b:'早餐', d:'客栈或古城早餐店', nav:''},
+  {t:'09:30', b:'大理古城取车', d:'租车行送车到客栈,或去古城门店;取车先拍一圈视频,记划痕', nav:'大理古城', pr:'¥120-350/天'},
+  {t:'10:00', b:'磻溪村S弯', d:'停15分钟拍照;路边停车别挡道', nav:'磻溪村', poi:'erhai', pr:'免费'},
+  {t:'10:30', b:'喜洲古镇', d:'转角楼、喜洲粑粑、白族院落;停车场¥10-20', nav:'喜洲古镇', poi:'xizhou', pr:'免费(停车¥10-20)'},
+  {t:'12:30', b:'午餐:白族菜', d:'砂锅鱼/黄焖鸡', nav:'喜洲古镇', pr:'人均¥50-80'},
+  {t:'14:00', b:'开车回古城', d:'约30分钟;车停古城外围停车场,别往里开', nav:'大理古城', pr:'停车¥30-50/天'},
+  {t:'14:30', b:'自由活动', d:'咖啡、午休;车今天不动了', nav:'大理古城'},
+  {t:'18:30', b:'晚餐', d:'古城里找家本地菜', nav:'大理古城', pr:'人均¥40-60'},
+],
+3:[
+  {t:'09:00', b:'起床+早餐', d:'不赶早,睡到自然醒', nav:''},
+  {t:'10:00', b:'退房·装车', d:'行李放后备箱;检查房间别落东西', nav:'大理古城'},
+  {t:'10:30', b:'自驾去丽江', d:'大丽高速约2.5h,服务区歇一次;限速多,别超速', nav:'丽江古城', pr:'过路费约¥80'},
+  {t:'13:00', b:'丽江还车', d:'古城附近门店;先加满油再还,省代加油服务费', nav:'丽江古城'},
+  {t:'13:30', b:'午餐', d:'还完车就近吃', nav:'丽江古城', pr:'人均¥30-50'},
+  {t:'14:30', b:'客栈入住', d:'石板路行李可让客栈三轮车接', nav:'丽江古城', poi:'lijianggucheng'},
+  {t:'15:30', b:'黑龙潭公园', d:'免费,雪山倒影最佳机位', nav:'黑龙潭公园', poi:'heilongtan', pr:'免费'},
+  {t:'16:30', b:'四方街·大水车', d:'木府¥40可选', nav:'丽江古城四方街', poi:'mufu'},
+  {t:'18:30', b:'晚餐:腊排骨火锅', d:'象山市场附近', nav:'象山市场', poi:'lapigu', pr:'人均¥60-90'},
+  {t:'20:00', b:'⚠️抢大索道票!', d:'小程序「丽江旅游集团」;抢10:00-11:00场', nav:'玉龙雪山', poi:'yulong', pr:'¥140/人'},
+],
+};
 // ==================== 景点/美食资料库 ====================
 // cat: spot景点 / food美食; tk:门票(行程里显示🎫小标签); hr:开放时间; tip:贴士; price:参考价
 const POIS={
@@ -598,6 +630,8 @@ function todayId(){
   return (d>=0&&d<=8)? d : -1;
 }
 let curDay=(()=>{const t=todayId();return t>=0?t:0;})();
+let driveMode=false;
+try{driveMode=localStorage.getItem('ynDrive')==='1';}catch(e){}
 function navUrl(q, apple){
   if(!q) return '';
   const b='https://api.map.baidu.com/geocoder?address='+encodeURIComponent(q)+'&output=html&src=webapp.yunnan';
@@ -615,9 +649,11 @@ function renderChips(){
 }
 function renderDay(){
   const d=DAYS.find(x=>x.id===curDay);
+  const isDrive=!!(driveMode&&DRIVE[d.id]);
+  const items=isDrive?DRIVE[d.id]:d.items;
   dayDetail.innerHTML=`<div class="card"><div class="bd">
-    <div class="day-title">${d.emoji} ${d.title}${d.id===todayId()?' <span class="badge" style="background:#eafaf1;color:#1e8449">今天</span>':''}</div>
-    <div class="timeline">${d.items.map(it=>{
+    <div class="day-title">${d.emoji} ${d.title}${isDrive?' <span class="badge" style="background:#fdebd0;color:#b9770e">自驾版</span>':''}${d.id===todayId()?' <span class="badge" style="background:#eafaf1;color:#1e8449">今天</span>':''}</div>
+    <div class="timeline">${items.map(it=>{
       const p=POIS[it.poi];
       return `
       <div class="item">
@@ -633,6 +669,17 @@ function renderDay(){
   dayDetail.querySelectorAll('.pname').forEach(el=>el.onclick=()=>openSheet(el.dataset.poi));
 }
 renderChips();renderDay();
+function renderModeBar(){
+  document.querySelectorAll('#modeBar .mode-btn').forEach(b=>{
+    b.classList.toggle('active',(b.dataset.mode==='1')===driveMode);
+    b.onclick=()=>{
+      driveMode=b.dataset.mode==='1';
+      try{localStorage.setItem('ynDrive',driveMode?'1':'0');}catch(e){}
+      renderModeBar();renderDay();
+    };
+  });
+}
+renderModeBar();
 
 // ==================== 介绍弹层 ====================
 const sheetMask=document.getElementById('sheetMask');
