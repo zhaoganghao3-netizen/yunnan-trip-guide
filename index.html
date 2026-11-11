@@ -194,6 +194,23 @@ table.bd2 th{background:var(--light);color:var(--blue)}
       </div>
     </div>
     <div class="card">
+      <div class="hd">🚗 自驾可行性(分段)</div>
+      <div class="bd">
+        <table class="bd2">
+          <tr><th>路段</th><th>适合自驾?</th><th>说明</th></tr>
+          <tr><td>大理环洱海</td><td>✅ 最适合</td><td>120km,随停随拍;古城/才村取还车</td></tr>
+          <tr><td>丽江→玉龙雪山</td><td>✅ 适合</td><td>30km景区路,早出发灵活,停车方便</td></tr>
+          <tr><td>昆明→大理</td><td>✅ 可以</td><td>杭瑞高速约4h,路好但隧道多;异地还车¥300-500</td></tr>
+          <tr><td>大理→丽江</td><td>✅ 可以</td><td>大丽高速约2.5h</td></tr>
+          <tr><td>丽江→香格里拉</td><td>⚠️ 谨慎</td><td>丽香高速+214,山路、4292m垭口、12月冰雪;新手别开</td></tr>
+          <tr><td>香格里拉→飞来寺</td><td>❌ 不建议</td><td>214国道约4h,白马雪山垭口,冬季结冰、落石</td></tr>
+          <tr><td>香格里拉→昆明</td><td>❌ 不建议</td><td>630km、8.5h,司机太累</td></tr>
+        </table>
+        <div style="font-size:12.5px;margin-top:8px;color:#b9770e">🚗 自驾版建议:大理租2天(环海+开去丽江还车)+丽江租1天(雪山),香格里拉和梅里继续包车;城际长途坐动车更省心</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:6px">租车:昆明机场/大理站/丽江机场都有网点;12月经济型¥120-200/天、SUV¥250-350/天;异地还车大理→丽江¥300-500;建议买全险、备防滑链;驾龄需满1年(部分平台2年)</div>
+      </div>
+    </div>
+    <div class="card">
       <div class="hd">⚠️ 购票提醒</div>
       <div class="bd" style="font-size:13.5px">
         <div>① 12306提前15天开售,按上表"开售日"当天买</div>
@@ -294,7 +311,7 @@ table.bd2 th{background:var(--light);color:var(--blue)}
       <div class="hd">💴 预算总表(人均·人民币)</div>
       <div class="bd">
         <table class="bd2" id="budgetTable"></table>
-        <div style="font-size:12px;color:var(--gray);margin-top:8px">3人合计约¥1.5万-2.0万;人均按3人摊,2人同行会更高;不含购物、演出</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">3人合计约¥1.5万-2.0万;人均按3人摊,2人同行会更高;不含购物、演出;自驾版人均再+300-500(租车/油/过路/异地还车)</div>
       </div>
     </div>
   </div>
@@ -356,7 +373,7 @@ const DAYS = [
   {t:'19:15', b:'晚餐:白族酸辣鱼', d:'洱海鱼,酸辣开胃', nav:'大理古城', poi:'suanyu', pr:'人均¥50-80'},
   {t:'20:30', b:'夜逛大理古城', d:'洋人街、人民路', nav:'大理古城'},
 ]},
-{id:2, emoji:'🌊', title:'Day 2 · 12/3(四) 洱海西岸半日', items:[
+{id:2, emoji:'🌊', title:'Day 2 · 12/3(四) 洱海西岸半日(适合自驾)', items:[
   {t:'08:30', b:'早餐', d:'客栈或古城早餐店', nav:''},
   {t:'09:00', b:'包车出发', d:'半天约¥300-400/车,提前一天订;12月风大别骑电动车', nav:'', pr:'¥300-400/车半日'},
   {t:'09:30', b:'磻溪村S弯', d:'顺路停15分钟拍照;网红点人多,拍完就走', nav:'磻溪村', poi:'erhai', pr:'免费'},
