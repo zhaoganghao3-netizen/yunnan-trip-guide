@@ -122,7 +122,9 @@ table.bd2 th{background:var(--light);color:var(--blue)}
   .pr{background:#173326;color:#7fd1a3;border-color:#24503a}
 }
 @media print{
-  .bottom,.navrow,.day-chip-bar,header .count{display:none!important}
+  @page{size:A4;margin:12mm}
+  .bottom,.navrow,.day-chip-bar,.mode-bar,header .count{display:none!important}
+  .tab-page{display:block!important}
   body{background:#fff;padding:0}
   .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;page-break-inside:avoid}
   header{position:static;background:#1a5276!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
@@ -812,6 +814,13 @@ function renderModeBar(){
   });
 }
 renderModeBar();
+// 打印/导出PDF模式:#print 展开全部标签页和9天行程
+if(location.hash==='#print'){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.add('active'));
+  const wrap=document.createElement('div');
+  for(let i=0;i<DAYS.length;i++){curDay=i;renderDay();wrap.insertAdjacentHTML('beforeend',dayDetail.innerHTML);}
+  dayDetail.innerHTML='';dayDetail.appendChild(wrap);
+}
 
 // ==================== 介绍弹层 ====================
 const sheetMask=document.getElementById('sheetMask');
