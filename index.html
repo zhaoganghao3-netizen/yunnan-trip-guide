@@ -294,6 +294,10 @@ table.bd2 th{background:var(--light);color:var(--blue)}
   <!-- ============ 美食 ============ -->
   <div class="tab-page" id="page-food">
     <div class="card">
+      <div class="hd">🏅 当地老店(点名字导航)</div>
+      <div class="bd" id="foodShops" style="font-size:13px"></div>
+    </div>
+    <div class="card">
       <div class="hd">📍 城市美食地图(点名字导航)</div>
       <div class="bd" id="foodMap" style="font-size:13px"></div>
     </div>
@@ -826,6 +830,28 @@ document.getElementById('sheetX').onclick=closeSheet;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();});
 
 // ==================== 城市美食地图 ====================
+const FOODSHOPS=[
+ ['大理',[
+  ['梅子井酒家','白族菜·酸辣鱼','人均60-100'],
+  ['石井私房菜','白族家常菜','人均50-80'],
+  ['再回首凉鸡米线','凉鸡米线','¥15-25'],
+  ['段公子·白族菜','网红店,要排队','人均80-120'],
+ ]],
+ ['丽江',[
+  ['阿妈意纳西饮食院','纳西菜·腊排骨','人均60-90'],
+  ['88号小吃店','鸡豆凉粉·纳西小吃','人均30-50'],
+  ['钰洁腊排骨','腊排骨火锅','人均50-70'],
+  ['唠叨坊','黑山羊火锅','人均60-90'],
+ ]],
+ ['香格里拉',[
+  ['银同牦牛肉火锅','牦牛肉火锅','人均80-120'],
+  ['扎西德勒藏餐','藏餐·酥油茶','人均60-90'],
+  ['阿彬藏餐','藏餐·青稞饼','人均50-80'],
+ ]],
+];
+const fsEl=document.getElementById('foodShops');
+if(fsEl) fsEl.innerHTML=FOODSHOPS.map(([c,list])=>`<div style="margin-bottom:10px"><b>${c}</b>`+list.map(x=>`<div style="margin-top:5px"><a href="${navUrl(x[0]+' '+c)}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none">${x[0]}</a> <span style="color:var(--gray);font-size:12px">${x[1]} · ${x[2]}</span></div>`).join('')+`</div>`).join('');
+
 const FOODMAP=[
  ['昆明',['过桥米线','汽锅鸡','烧饵块','豆花米线','嘉华鲜花饼']],
  ['大理',['白族酸辣鱼','喜洲粑粑','烤乳扇','饵丝','砂锅鱼']],
