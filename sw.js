@@ -1,4 +1,4 @@
-const CACHE = 'yn-trip-v2';
+const CACHE = 'yn-trip-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {
