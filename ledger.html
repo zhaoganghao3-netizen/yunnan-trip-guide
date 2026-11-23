@@ -47,6 +47,7 @@ input,select,button{font-family:inherit}
 .item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .item .em{font-size:20px}
+.item .t{font-size:11px;color:var(--gray);width:36px;text-align:right;font-variant-numeric:tabular-nums}
 .item .mid{flex:1;min-width:0}
 .item .nm{font-size:14px}
 .item .sub2{font-size:11px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -87,7 +88,7 @@ input,select,button{font-family:inherit}
   </div>
 
   <div class="card">
-    <h2>记一笔</h2>
+    <h2>记一笔 · 自动记下时间</h2>
     <div class="amt"><span class="yen">¥</span><input id="amt" type="number" inputmode="decimal" placeholder="0" step="0.01"></div>
     <div class="cats" id="cats"></div>
     <input class="note" id="note" type="text" placeholder="备注(可选),比如:古城米线" maxlength="20">
@@ -144,7 +145,7 @@ const sum=a=>a.reduce((s,x)=>s+Number(x.amt||0),0);
 let curCat='饭';
 
 function renderCats(){
-  document.getElementById('cats').innerHTML=CATS.map(([n,e])=>`<div class="cat ${n===curCat?'on':''}" data-c="${n}"><span class="em">${e}</span>${n}</div>`).join('');
+  document.getElementById('cats').innerHTML=CATS.map(([n,e])=>`<div class="cat ${n===curCat?'on':''}" data-c="${n}"><span class="t">${x.time||'--:--'}</span><span class="em">${e}</span>${n}</div>`).join('');
   document.querySelectorAll('#cats .cat').forEach(el=>el.onclick=()=>{curCat=el.dataset.c;renderCats();});
 }
 
@@ -188,11 +189,11 @@ function render(){
   st.items.forEach(x=>{(groups[x.date]=groups[x.date]||[]).push(x)});
   const dates=Object.keys(groups).sort().reverse();
   document.getElementById('list').innerHTML=dates.length?dates.map(d=>{
-    const its=groups[d].slice().reverse();
+    const its=groups[d].slice().sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
     const s=sum(its);
     return `<div class="day"><div class="dh"><span>${d}${d===today?' · 今天':''}</span><span>${fmt(s)}</span></div>`+
       its.map(x=>{const e=(CATS.find(y=>y[0]===x.cat)||['','📦'])[1];
-        return `<div class="item"><span class="em">${e}</span><div class="mid"><div class="nm">${x.cat}</div><div class="sub2">${x.note||''}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
+        return `<div class="item"><span class="t">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.cat}</div><div class="sub2">${x.note||''}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
 
   document.querySelectorAll('.del').forEach(el=>el.onclick=()=>{
     if(confirm('删除这笔?')){st.items=st.items.filter(x=>x.id!==el.dataset.id);save();render();}
@@ -206,7 +207,7 @@ function render(){
 document.getElementById('save').onclick=()=>{
   const amt=parseFloat(document.getElementById('amt').value);
   if(!amt||amt<=0){alert('请输入金额');return;}
-  st.items.push({id:Date.now()+''+Math.random().toString(16).slice(2),date:todayStr(),cat:curCat,note:document.getElementById('note').value.trim(),amt});
+  st.items.push({id:Date.now()+''+Math.random().toString(16).slice(2),date:todayStr(),time:new Date().toTimeString().slice(0,5),cat:curCat,note:document.getElementById('note').value.trim(),amt});
   save();
   document.getElementById('amt').value='';document.getElementById('note').value='';
   document.getElementById('amt').focus();
