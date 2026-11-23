@@ -31,10 +31,12 @@ input,select,button{font-family:inherit}
 .amt{display:flex;align-items:center;gap:8px}
 .amt input{flex:1;font-size:28px;font-weight:700;border:none;background:transparent;color:var(--txt);outline:none;padding:6px 0;width:100%}
 .amt .yen{font-size:22px;color:var(--gray)}
-.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
-.cat{border:1px solid var(--line);background:transparent;border-radius:10px;padding:8px 0;text-align:center;font-size:11px;color:var(--gray);cursor:pointer}
-.cat.on{border-color:var(--blue);background:var(--light);color:var(--blue);font-weight:600}
-.cat .em{display:block;font-size:18px;margin-bottom:2px}
+.grp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 6px}
+.g{border:1px solid var(--line);background:transparent;border-radius:10px;padding:10px 0;text-align:center;font-size:13px;color:var(--gray);cursor:pointer}
+.g.on{border-color:var(--blue);background:var(--light);color:var(--blue);font-weight:700}
+.subs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+.s{border:1px solid var(--line);background:transparent;border-radius:20px;padding:6px 12px;font-size:12.5px;color:var(--gray);cursor:pointer}
+.s.on{border-color:var(--blue);background:var(--light);color:var(--blue);font-weight:600}
 .note{width:100%;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:10px;padding:9px 10px;font-size:14px;outline:none}
 .save{width:100%;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:700;color:#fff;background:linear-gradient(135deg,#1a5276,#2e86c1);margin-top:10px;cursor:pointer}
 .save:active{opacity:.85}
@@ -46,18 +48,18 @@ input,select,button{font-family:inherit}
 .day .dh{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);padding:6px 0;border-bottom:1px dashed var(--line)}
 .item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
-.item .em{font-size:20px}
 .item .t{font-size:11px;color:var(--gray);width:36px;text-align:right;font-variant-numeric:tabular-nums;cursor:pointer;text-decoration:underline dotted}
+.item .em{font-size:20px}
 .item .mid{flex:1;min-width:0}
 .item .nm{font-size:14px}
-.item .sub2{font-size:11px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.item .cat-tag{cursor:pointer;text-decoration:underline dotted}
+.item .sub2{font-size:11px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;text-decoration:underline dotted}
 .item .v{font-weight:700;font-size:15px}
 .item .del{color:var(--gray);font-size:18px;padding:4px 6px;cursor:pointer}
 .bars .bline{margin-bottom:8px}
 .bars .bl{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:3px}
 .bars .bt{height:8px;background:var(--light);border-radius:4px;overflow:hidden}
 .bars .bt > i{display:block;height:100%;background:#2e86c1;border-radius:4px}
+.bars .subline{font-size:11px;color:var(--gray);margin:2px 0 8px;padding-left:2px}
 .empty{text-align:center;color:var(--gray);font-size:13px;padding:18px 0}
 .foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 12px calc(8px + env(safe-area-inset-bottom));gap:10px;z-index:20}
 .foot button{flex:1;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:10px;padding:10px;font-size:13px}
@@ -91,8 +93,9 @@ input,select,button{font-family:inherit}
   <div class="card">
     <h2>记一笔 · 写清买了啥</h2>
     <div class="amt"><span class="yen">¥</span><input id="amt" type="number" inputmode="decimal" placeholder="0" step="0.01"></div>
-    <div class="cats" id="cats"></div>
-    <input class="note" id="note" type="text" placeholder="具体名称:奶茶、烧烤、门票…" maxlength="20">
+    <div class="grp" id="grp"></div>
+    <div class="subs" id="subs"></div>
+    <input class="note" id="note" type="text" placeholder="具体名称:珍珠奶茶、烧烤、玉龙门票…" maxlength="24">
     <button class="save" id="save">保存</button>
   </div>
 
@@ -124,90 +127,85 @@ input,select,button{font-family:inherit}
 </div>
 
 <script>
-const CATS=[
-  ['饭','🍚'],['零食','🍿'],['奶茶','🧋'],['打车','🚕'],['门票','🎫'],
-  ['住宿','🏨'],['购物','🛒'],['特产','🎁'],['油车','🚗'],['其他','📦']
-];
+const GROUPS={
+  '餐饮':['正餐','早餐','小吃','零食','饮品','水果'],
+  '交通':['打车','公交地铁','租车油费','停车','火车机票'],
+  '住宿':['住宿'],
+  '门票':['门票','娱乐'],
+  '购物':['购物','特产'],
+  '其他':['医药','其他']
+};
+const GORDER=['餐饮','交通','住宿','门票','购物','其他'];
+const EMO={'餐饮':'🍚','交通':'🚕','住宿':'🏨','门票':'🎫','购物':'🛍️','其他':'📦'};
 const KEY='ynLedger_v1';
 const START=new Date('2026-12-03T00:00:00');
 const END=new Date('2026-12-11T23:59:59');
 const DEF={budget:12700,items:[]};
 
-function load(){
-  try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.items))return d;}catch(e){}
-  return JSON.parse(JSON.stringify(DEF));
-}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.items))return d;}catch(e){}return JSON.parse(JSON.stringify(DEF));}
 let st=load();
+const LEGACY={'饭':['餐饮','正餐'],'零食':['餐饮','零食'],'奶茶':['餐饮','饮品'],'打车':['交通','打车'],'门票':['门票','门票'],'住宿':['住宿','住宿'],'购物':['购物','购物'],'特产':['购物','特产'],'油车':['交通','租车油费'],'其他':['其他','其他']};
+function fixItems(){st.items.forEach(x=>{if(!x.group||!x.cat||!GROUPS[x.group]||!GROUPS[x.group].includes(x.cat)){const m=LEGACY[x.cat]||['其他','其他'];x.group=m[0];x.cat=m[1];}});}
+fixItems();
 function save(){localStorage.setItem(KEY,JSON.stringify(st));}
 const fmt=n=>'¥'+Number(n||0).toLocaleString('zh-CN',{maximumFractionDigits:2});
 const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const sum=a=>a.reduce((s,x)=>s+Number(x.amt||0),0);
-
-let curCat='饭';
+let curG='餐饮', curS='正餐';
 
 function renderCats(){
-  document.getElementById('cats').innerHTML=CATS.map(([n,e])=>`<div class="cat ${n===curCat?'on':''}" data-c="${n}"><span class="t">${x.time||'--:--'}</span><span class="em">${e}</span>${n}</div>`).join('');
-  document.querySelectorAll('#cats .cat').forEach(el=>el.onclick=()=>{curCat=el.dataset.c;renderCats();});
+  document.getElementById('grp').innerHTML=GORDER.map(g=>`<div class="g ${g===curG?'on':''}" data-g="${g}">${EMO[g]} ${g}</div>`).join('');
+  document.querySelectorAll('#grp .g').forEach(el=>el.onclick=()=>{curG=el.dataset.g;curS=GROUPS[curG][0];renderCats();});
+  document.getElementById('subs').innerHTML=GROUPS[curG].map(s=>`<span class="s ${s===curS?'on':''}" data-s="${s}">${s}</span>`).join('');
+  document.querySelectorAll('#subs .s').forEach(el=>el.onclick=()=>{curS=el.dataset.s;renderCats();});
 }
 
 function render(){
-  const spent=sum(st.items);
-  const left=st.budget-spent;
+  fixItems();
+  const spent=sum(st.items), left=st.budget-spent;
   document.getElementById('sBudget').textContent=fmt(st.budget);
   document.getElementById('sSpent').textContent=fmt(spent);
-  const le=document.getElementById('sLeft');
-  le.textContent=fmt(left);
-  le.className='num '+(left<0?'red':'green');
+  const le=document.getElementById('sLeft');le.textContent=fmt(left);le.className='num '+(left<0?'red':'green');
   const pct=st.budget>0?Math.min(100,spent/st.budget*100):0;
   document.getElementById('bar').style.width=pct.toFixed(1)+'%';
   document.getElementById('barPct').textContent=pct.toFixed(0)+'%';
+
   const today=todayStr();
   const todayItems=st.items.filter(x=>x.date===today);
-  const todaySum=sum(todayItems);
-  document.getElementById('todayNum').textContent=fmt(todaySum);
+  document.getElementById('todayNum').textContent=fmt(sum(todayItems));
   document.getElementById('todayCount').textContent=todayItems.length+' 笔';
-  const byCat={};
-  todayItems.forEach(x=>{byCat[x.cat]=(byCat[x.cat]||0)+Number(x.amt)});
-  document.getElementById('todayChips').innerHTML=Object.keys(byCat).length?Object.entries(byCat).map(([c,v])=>{
-    const e=(CATS.find(x=>x[0]===c)||['',''])[1];
-    return `<span class="chip">${e} ${c} ${fmt(v)}</span>`;}).join(''):'<span style="font-size:12px;color:var(--gray)">今天还没记账</span>';
+  const byG={};todayItems.forEach(x=>{byG[x.group]=(byG[x.group]||0)+Number(x.amt)});
+  document.getElementById('todayChips').innerHTML=Object.keys(byG).length?Object.entries(byG).map(([g,v])=>`<span class="chip">${EMO[g]||'📦'} ${g} ${fmt(v)}</span>`).join(''):'<span style="font-size:12px;color:var(--gray)">今天还没记账</span>';
 
+  const all={};st.items.forEach(x=>{all[x.group]=all[x.group]||{};all[x.group][x.cat]=(all[x.group][x.cat]||0)+Number(x.amt)});
+  const gs=Object.keys(all).map(g=>[g,sum(Object.values(all[g]).map(v=>({amt:v}))) ]).sort((a,b)=>b[1]-a[1]);
+  const max=gs.length?gs[0][1]:1;
+  document.getElementById('bars').innerHTML=gs.length?gs.map(([g,v])=>{
+    const subs=Object.entries(all[g]).sort((a,b)=>b[1]-a[1]).map(([c,n])=>c+' '+fmt(n)).join(' · ');
+    return `<div class="bline"><div class="bl"><span>${EMO[g]||'📦'} ${g}</span><span>${fmt(v)}</span></div><div class="bt"><i style="width:${(v/max*100).toFixed(0)}%"></i></div><div class="subline">${subs}</div></div>`;
+  }).join(''):'<div class="empty">还没有记录</div>';
 
-
-
-
-  // 分类
-  const all={};
-  st.items.forEach(x=>{all[x.cat]=(all[x.cat]||0)+Number(x.amt)});
-  const arr=Object.entries(all).sort((a,b)=>b[1]-a[1]);
-  const max=arr.length?arr[0][1]:1;
-  document.getElementById('bars').innerHTML=arr.length?arr.map(([c,v])=>{
-    const e=(CATS.find(x=>x[0]===c)||['','📦'])[1];
-    return `<div class="bline"><div class="bl"><span>${e} ${c}</span><span>${fmt(v)}</span></div><div class="bt"><i style="width:${(v/max*100).toFixed(0)}%"></i></div></div>`;}).join(''):'<div class="empty">还没有记录</div>';
-
-  // 明细(按日期倒序)
-  const groups={};
-  st.items.forEach(x=>{(groups[x.date]=groups[x.date]||[]).push(x)});
+  const groups={};st.items.forEach(x=>{(groups[x.date]=groups[x.date]||[]).push(x)});
   const dates=Object.keys(groups).sort().reverse();
   document.getElementById('list').innerHTML=dates.length?dates.map(d=>{
     const its=groups[d].slice().sort((a,b)=>(a.time||'99:99').localeCompare(b.time||'99:99'));
-    const s=sum(its);
-    return `<div class="day"><div class="dh"><span>${d}${d===today?' · 今天':''}</span><span>${fmt(s)}</span></div>`+
-      its.map(x=>{const e=(CATS.find(y=>y[0]===x.cat)||['','📦'])[1];
-        return `<div class="item"><span class="t" data-id="${x.id}">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.note||x.cat}</div><div class="sub2 cat-tag" data-id="${x.id}">${x.cat}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
+    return `<div class="day"><div class="dh"><span>${d}${d===today?' · 今天':''}</span><span>${fmt(sum(its))}</span></div>`+
+      its.map(x=>`<div class="item"><span class="t" data-id="${x.id}">${x.time||'--:--'}</span><span class="em">${EMO[x.group]||'📦'}</span><div class="mid"><div class="nm">${x.note||x.cat}</div><div class="sub2" data-id="${x.id}">${x.group} · ${x.cat}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`).join('')+`</div>`;
+  }).join(''):'<div class="empty">点上面「记一笔」开始</div>';
 
   document.querySelectorAll('.t').forEach(el=>el.onclick=()=>{
-    const it=st.items.find(x=>x.id===el.dataset.id); if(!it)return;
-    const v=prompt('修改时间(HH:MM)',it.time||'12:00'); if(v===null)return;
+    const it=st.items.find(x=>x.id===el.dataset.id);if(!it)return;
+    const v=prompt('修改时间(HH:MM)',it.time||'12:00');if(v===null)return;
     if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(v.trim())){alert('格式不对,例如 09:15');return;}
-    it.time=v.trim().padStart(5,'0'); save(); render();
+    it.time=v.trim().padStart(5,'0');save();render();
   });
-  document.querySelectorAll('.cat-tag').forEach(el=>el.onclick=()=>{
-    const it=st.items.find(x=>x.id===el.dataset.id); if(!it)return;
-    const names=CATS.map(c=>c[0]).join('/');
-    const v=prompt('改成哪个分类?\n'+names,it.cat); if(v===null)return;
-    const vv=v.trim(); if(!CATS.some(c=>c[0]===vv)){alert('分类不存在,可选:\n'+names);return;}
-    it.cat=vv; save(); render();
+  document.querySelectorAll('.sub2').forEach(el=>el.onclick=()=>{
+    const it=st.items.find(x=>x.id===el.dataset.id);if(!it)return;
+    const list=Object.keys(GROUPS).map(g=>g+'('+GROUPS[g].join('/')+')').join('\n');
+    const v=prompt('改分类:输入 大分类-小类,如 餐饮-饮品\n'+list,it.group+'-'+it.cat);if(v===null)return;
+    const m=v.trim().split(/[-－·\s]+/);const g=m[0],s=m[1]||'';
+    if(!GROUPS[g]||!GROUPS[g].includes(s)){alert('没这个分类,照格式写,如 餐饮-饮品');return;}
+    it.group=g;it.cat=s;save();render();
   });
   document.querySelectorAll('.del').forEach(el=>el.onclick=()=>{
     if(confirm('删除这笔?')){st.items=st.items.filter(x=>x.id!==el.dataset.id);save();render();}
@@ -221,30 +219,24 @@ function render(){
 document.getElementById('save').onclick=()=>{
   const amt=parseFloat(document.getElementById('amt').value);
   if(!amt||amt<=0){alert('请输入金额');return;}
-  st.items.push({id:Date.now()+''+Math.random().toString(16).slice(2),date:todayStr(),time:new Date().toTimeString().slice(0,5),cat:curCat,note:document.getElementById('note').value.trim(),amt});
+  st.items.push({id:Date.now()+''+Math.random().toString(16).slice(2),date:todayStr(),time:new Date().toTimeString().slice(0,5),group:curG,cat:curS,note:document.getElementById('note').value.trim(),amt});
   save();
   document.getElementById('amt').value='';document.getElementById('note').value='';
   document.getElementById('amt').focus();
   render();
 };
 document.getElementById('amt').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('save').click();});
-
 document.getElementById('setBudget').onclick=()=>{
   const v=parseFloat(document.getElementById('budgetIn').value);
   if(!v||v<=0){alert('请输入预算');return;}
   st.budget=v;save();render();
 };
-
 document.getElementById('exportBtn').onclick=()=>{
   const txt=JSON.stringify(st,null,2);
-  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert('已复制到剪贴板,可粘到微信保存'),()=>prompt('复制下面内容:',txt));}
+  if(navigator.clipboard){navigator.clipboard.writeText(txt).then(()=>alert('已复制到剪贴板'),()=>prompt('复制下面内容:',txt));}
   else prompt('复制下面内容:',txt);
 };
-document.getElementById('clearBtn').onclick=()=>{
-  if(confirm('清空所有记账记录?(预算保留)')){
-    st.items=[];save();render();
-  }
-};
+document.getElementById('clearBtn').onclick=()=>{if(confirm('清空所有记账记录?(预算保留)')){st.items=[];save();render();}};
 
 renderCats();render();
 document.getElementById('budgetIn').value=st.budget;
