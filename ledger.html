@@ -103,7 +103,7 @@ input,select,button{font-family:inherit}
     <div class="amt"><span class="yen">¥</span><input id="amt" type="number" inputmode="decimal" placeholder="0" step="0.01"></div>
     <div class="grp" id="grp"></div>
     <div class="subs" id="subs"></div>
-    <input class="note" id="note" type="text" placeholder="具体名称:珍珠奶茶、烧烤、玉龙门票…" maxlength="24">
+    <input class="note" id="note" type="text" placeholder="写名称,如:珍珠奶茶、烧烤、门票(会自动分类)" maxlength="24">
     <button class="save" id="save">保存</button>
   </div>
 
@@ -145,7 +145,26 @@ const GROUPS={
 };
 const GORDER=['餐饮','交通','住宿','门票','购物','其他'];
 const EMO={'餐饮':'🍚','交通':'🚕','住宿':'🏨','门票':'🎫','购物':'🛍️','其他':'📦'};
-const KEY='ynLedger_v1';
+const RULES=[
+ [/奶茶|咖啡|茶|果汁|可乐|饮料|矿泉水|酸奶/,['餐饮','饮品']],
+ [/早餐|米线|饵丝|包子|豆浆|粥/,['餐饮','早餐']],
+ [/烧烤|串|小吃|凉粉|粑粑|乳扇|豆腐|炸|烤肠/,['餐饮','小吃']],
+ [/零食|薯片|巧克力|面包|饼干/,['餐饮','零食']],
+ [/水果|苹果|香蕉|橙|西瓜/,['餐饮','水果']],
+ [/火锅|午餐|晚餐|正餐|饭|餐厅|酸辣鱼|牦牛|腊排骨|黑山羊|鸡|烤肉|菜/,['餐饮','正餐']],
+ [/打车|出租|滴滴|网约车/,['交通','打车']],
+ [/地铁|公交|大巴|巴士/,['交通','公交地铁']],
+ [/加油|油费|租车|过路|高速/,['交通','租车油费']],
+ [/停车|车位/,['交通','停车']],
+ [/火车|高铁|动车|机票|飞机|航班/,['交通','火车机票']],
+ [/住|酒店|民宿|房费|客栈/,['住宿','住宿']],
+ [/门票|景区|索道|进山|观光车/,['门票','门票']],
+ [/演出|千古情|骑马|娱乐|体验|扎染/,['门票','娱乐']],
+ [/特产|伴手礼|鲜花饼|牛肉干|茶饼/,['购物','特产']],
+ [/购物|纪念品|超市|买/,['购物','购物']],
+ [/药|医院|氧气|高反/,['其他','医药']]
+];
+function autoCat(s){for(const [re,c] of RULES){if(re.test(s))return c;}return null;}const KEY='ynLedger_v1';
 const START=new Date('2026-12-03T00:00:00');
 const END=new Date('2026-12-11T23:59:59');
 const DEF={budget:12700,items:[]};
@@ -153,7 +172,11 @@ const DEF={budget:12700,items:[]};
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.items))return d;}catch(e){}return JSON.parse(JSON.stringify(DEF));}
 let st=load();
 const LEGACY={'饭':['餐饮','正餐'],'零食':['餐饮','零食'],'奶茶':['餐饮','饮品'],'打车':['交通','打车'],'门票':['门票','门票'],'住宿':['住宿','住宿'],'购物':['购物','购物'],'特产':['购物','特产'],'油车':['交通','租车油费'],'其他':['其他','其他']};
-function fixItems(){st.items.forEach(x=>{if(!x.group||!x.cat||!GROUPS[x.group]||!GROUPS[x.group].includes(x.cat)){const m=LEGACY[x.cat]||['其他','其他'];x.group=m[0];x.cat=m[1];}});}
+function fixItems(){st.items.forEach(x=>{
+  if(!x.group||!x.cat||!GROUPS[x.group]||!GROUPS[x.group].includes(x.cat)){const m=LEGACY[x.cat]||['其他','其他'];x.group=m[0];x.cat=m[1];}
+  const a=autoCat(x.note||'');
+  if(a&&x.group==='餐饮'&&x.cat==='正餐'&&a[0]==='餐饮'&&a[1]!=='正餐')x.cat=a[1];
+});}
 fixItems();
 function save(){localStorage.setItem(KEY,JSON.stringify(st));}
 const fmt=n=>'¥'+Number(n||0).toLocaleString('zh-CN',{maximumFractionDigits:2});
@@ -253,6 +276,10 @@ document.getElementById('save').onclick=()=>{
   render();
 };
 document.getElementById('amt').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('save').click();});
+document.getElementById('note').addEventListener('input',e=>{
+  const c=autoCat(e.target.value);
+  if(c){curG=c[0];curS=c[1];renderCats();}
+});
 document.getElementById('setBudget').onclick=()=>{
   const v=parseFloat(document.getElementById('budgetIn').value);
   if(!v||v<=0){ask('请输入预算',()=>{});return;}
