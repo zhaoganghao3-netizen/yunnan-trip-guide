@@ -47,7 +47,7 @@ input,select,button{font-family:inherit}
 .item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .item .em{font-size:20px}
-.item .t{font-size:11px;color:var(--gray);width:36px;text-align:right;font-variant-numeric:tabular-nums}
+.item .t{font-size:11px;color:var(--gray);width:36px;text-align:right;font-variant-numeric:tabular-nums;cursor:pointer;text-decoration:underline dotted}
 .item .mid{flex:1;min-width:0}
 .item .nm{font-size:14px}
 .item .sub2{font-size:11px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -88,10 +88,10 @@ input,select,button{font-family:inherit}
   </div>
 
   <div class="card">
-    <h2>记一笔 · 自动记下时间</h2>
+    <h2>记一笔 · 写清买了啥</h2>
     <div class="amt"><span class="yen">¥</span><input id="amt" type="number" inputmode="decimal" placeholder="0" step="0.01"></div>
     <div class="cats" id="cats"></div>
-    <input class="note" id="note" type="text" placeholder="备注(可选),比如:古城米线" maxlength="20">
+    <input class="note" id="note" type="text" placeholder="具体名称:奶茶、烧烤、门票…" maxlength="20">
     <button class="save" id="save">保存</button>
   </div>
 
@@ -193,8 +193,14 @@ function render(){
     const s=sum(its);
     return `<div class="day"><div class="dh"><span>${d}${d===today?' · 今天':''}</span><span>${fmt(s)}</span></div>`+
       its.map(x=>{const e=(CATS.find(y=>y[0]===x.cat)||['','📦'])[1];
-        return `<div class="item"><span class="t">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.cat}</div><div class="sub2">${x.note||''}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
+        return `<div class="item"><span class="t" data-id="${x.id}">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.note||x.cat}</div><div class="sub2">${x.cat}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
 
+  document.querySelectorAll('.t').forEach(el=>el.onclick=()=>{
+    const it=st.items.find(x=>x.id===el.dataset.id); if(!it)return;
+    const v=prompt('修改时间(HH:MM)',it.time||'12:00'); if(v===null)return;
+    if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(v.trim())){alert('格式不对,例如 09:15');return;}
+    it.time=v.trim().padStart(5,'0'); save(); render();
+  });
   document.querySelectorAll('.del').forEach(el=>el.onclick=()=>{
     if(confirm('删除这笔?')){st.items=st.items.filter(x=>x.id!==el.dataset.id);save();render();}
   });
