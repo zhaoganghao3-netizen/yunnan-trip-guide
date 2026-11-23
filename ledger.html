@@ -51,6 +51,7 @@ input,select,button{font-family:inherit}
 .item .mid{flex:1;min-width:0}
 .item .nm{font-size:14px}
 .item .sub2{font-size:11px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item .cat-tag{cursor:pointer;text-decoration:underline dotted}
 .item .v{font-weight:700;font-size:15px}
 .item .del{color:var(--gray);font-size:18px;padding:4px 6px;cursor:pointer}
 .bars .bline{margin-bottom:8px}
@@ -193,13 +194,20 @@ function render(){
     const s=sum(its);
     return `<div class="day"><div class="dh"><span>${d}${d===today?' · 今天':''}</span><span>${fmt(s)}</span></div>`+
       its.map(x=>{const e=(CATS.find(y=>y[0]===x.cat)||['','📦'])[1];
-        return `<div class="item"><span class="t" data-id="${x.id}">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.note||x.cat}</div><div class="sub2">${x.cat}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
+        return `<div class="item"><span class="t" data-id="${x.id}">${x.time||'--:--'}</span><span class="em">${e}</span><div class="mid"><div class="nm">${x.note||x.cat}</div><div class="sub2 cat-tag" data-id="${x.id}">${x.cat}</div></div><span class="v">${fmt(x.amt)}</span><span class="del" data-id="${x.id}">✕</span></div>`;}).join('')+`</div>`;}).join(''):'<div class="empty">点上面「记一笔」开始</div>';
 
   document.querySelectorAll('.t').forEach(el=>el.onclick=()=>{
     const it=st.items.find(x=>x.id===el.dataset.id); if(!it)return;
     const v=prompt('修改时间(HH:MM)',it.time||'12:00'); if(v===null)return;
     if(!/^([01]?\d|2[0-3]):[0-5]\d$/.test(v.trim())){alert('格式不对,例如 09:15');return;}
     it.time=v.trim().padStart(5,'0'); save(); render();
+  });
+  document.querySelectorAll('.cat-tag').forEach(el=>el.onclick=()=>{
+    const it=st.items.find(x=>x.id===el.dataset.id); if(!it)return;
+    const names=CATS.map(c=>c[0]).join('/');
+    const v=prompt('改成哪个分类?\n'+names,it.cat); if(v===null)return;
+    const vv=v.trim(); if(!CATS.some(c=>c[0]===vv)){alert('分类不存在,可选:\n'+names);return;}
+    it.cat=vv; save(); render();
   });
   document.querySelectorAll('.del').forEach(el=>el.onclick=()=>{
     if(confirm('删除这笔?')){st.items=st.items.filter(x=>x.id!==el.dataset.id);save();render();}
