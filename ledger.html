@@ -77,7 +77,7 @@ input,select,button{font-family:inherit}
       <div class="stat"><div class="lab">还剩</div><div class="num green" id="sLeft">¥0</div></div>
     </div>
     <div class="bar"><i id="bar"></i></div>
-    <div class="barnote"><span id="barPct">0%</span><span id="barDaily">日均可用 --</span></div>
+    <div class="barnote"><span id="barPct">0%</span><span>已花 / 总预算</span></div>
   </div>
 
   <div class="card">
@@ -111,6 +111,7 @@ input,select,button{font-family:inherit}
       <button id="setBudget" style="border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 10px;font-size:13px">保存</button>
     </div>
     <div class="setrow" style="margin-top:8px">行程 <span id="dateRange"></span></div>
+    <div style="font-size:12px;color:var(--gray);margin-top:6px">改完点保存,顶部预算/剩余/进度条会自动更新</div>
   </div>
 
 </div>
@@ -169,11 +170,9 @@ function render(){
     const e=(CATS.find(x=>x[0]===c)||['',''])[1];
     return `<span class="chip">${e} ${c} ${fmt(v)}</span>`;}).join(''):'<span style="font-size:12px;color:var(--gray)">今天还没记账</span>';
 
-  // 剩余天数/日均
-  const now=new Date();
-  const end=D=new Date(END);
-  let days=Math.max(1,Math.ceil((end-now)/86400000));
-  document.getElementById('barDaily').textContent=left>0?('日均可用 '+fmt(left/days)+' / 剩'+days+'天'):'已超预算';
+
+
+
 
   // 分类
   const all={};
