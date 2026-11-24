@@ -76,7 +76,14 @@ input,select,button{font-family:inherit}
 .dlgbtns button{flex:1;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:600}
 #dlgNo{background:var(--light);color:var(--txt)}
 #dlgYes{background:var(--blue);color:#fff}.setrow input[type=number]{width:96px;background:var(--light);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:15px;appearance:none;-webkit-appearance:none}
-.setrow input[type=date]{background:var(--light);color:var(--txt);border:1px solid var(--line);border-radius:8px}</style>
+.setrow input[type=date]{background:var(--light);color:var(--txt);border:1px solid var(--line);border-radius:8px}/* 紧凑设置区 */
+body{padding-bottom:64px}
+.wrap{padding-bottom:8px}
+.setrow{gap:8px;font-size:13px}
+.setrow input{flex:1;padding:6px 8px;font-size:14px;height:34px;border-radius:8px}
+.setrow input[type=number]{flex:0 0 76px;width:76px;text-align:center}
+#setBudget{padding:7px 14px;font-size:13px;height:34px}
+#setDates{width:100%;margin-top:8px;padding:8px;font-size:13.5px;font-weight:600;background:var(--light);border:1px solid var(--line);color:var(--txt);border-radius:8px}</style>
 </head>
 <body>
 <header>
