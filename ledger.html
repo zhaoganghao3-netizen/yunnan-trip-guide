@@ -68,6 +68,7 @@ input,select,button{font-family:inherit}
 .setrow input[type=number]{flex:0 0 96px;width:96px}
 .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
 .dlg.on{display:flex}
+.dlg[hidden]{display:none!important}
 .dlgbox{background:var(--card);border-radius:14px;padding:16px;width:100%;max-width:320px}
 .dlgbox .m{font-size:14px;margin-bottom:10px;white-space:pre-wrap}
 .dlgbox input{width:100%;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:9px;font-size:15px;margin-bottom:12px;outline:none}
@@ -139,7 +140,7 @@ input,select,button{font-family:inherit}
   <button id="clearBtn">清空</button>
 </div>
 
-<div class="dlg" id="dlg"><div class="dlgbox"><div class="m" id="dlgMsg"></div><input id="dlgIn" type="text" style="display:none"><div class="dlgbtns"><button id="dlgNo">取消</button><button id="dlgYes">确定</button></div></div></div><script>
+<div class="dlg" id="dlg" hidden><div class="dlgbox"><div class="m" id="dlgMsg"></div><input id="dlgIn" type="text" style="display:none"><div class="dlgbtns"><button id="dlgNo">取消</button><button id="dlgYes">确定</button></div></div></div><script>
 const GROUPS={
   '餐饮':['正餐','早餐','小吃','零食','饮品','水果'],
   '交通':['打车','公交地铁','租车油费','停车','火车机票'],
@@ -192,16 +193,16 @@ function openDlg(msg,def,cb){
   document.getElementById('dlgMsg').textContent=msg;
   const inp=document.getElementById('dlgIn');
   if(def===null){inp.style.display='none';}else{inp.style.display='block';inp.value=def;}
-  document.getElementById('dlg').classList.add('on');
+  document.getElementById('dlg').hidden=false;document.getElementById('dlg').classList.add('on');
   if(def!==null)setTimeout(()=>inp.focus(),60);
 }
 function ask(msg,cb){openDlg(msg,null,cb);}
 function askText(msg,def,cb){openDlg(msg,def,cb);}
-document.getElementById('dlgNo').onclick=()=>{document.getElementById('dlg').classList.remove('on');dlgCb=null;};
+document.getElementById('dlgNo').onclick=()=>{var d=document.getElementById('dlg');d.classList.remove('on');d.hidden=true;dlgCb=null;};
 document.getElementById('dlgYes').onclick=()=>{
   const inp=document.getElementById('dlgIn');
   const val=inp.style.display==='none'?true:inp.value;
-  document.getElementById('dlg').classList.remove('on');
+  {var d=document.getElementById('dlg');d.classList.remove('on');d.hidden=true;}
   const cb=dlgCb;dlgCb=null;if(cb)cb(val);
 };
 let curG='餐饮', curS='正餐';
