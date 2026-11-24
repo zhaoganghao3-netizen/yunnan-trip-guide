@@ -64,7 +64,8 @@ input,select,button{font-family:inherit}
 .foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 12px calc(8px + env(safe-area-inset-bottom));gap:10px;z-index:20}
 .foot button{flex:1;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:10px;padding:10px;font-size:13px}
 .setrow{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--gray);flex-wrap:wrap}
-.setrow input{width:110px;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 8px;font-size:14px}
+.setrow input[type=number]{width:96px;}
+.setrow input[type=date]{width:142px;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 8px;font-size:14px}
 .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
 .dlg.on{display:flex}
 .dlgbox{background:var(--card);border-radius:14px;padding:16px;width:100%;max-width:320px}
@@ -123,7 +124,7 @@ input,select,button{font-family:inherit}
       总预算 <input id="budgetIn" type="number" inputmode="decimal" step="100">
       <button id="setBudget" style="border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 10px;font-size:13px">保存</button>
     </div>
-    <div class="setrow" style="margin-top:8px">出行 <input id="startIn" type="date"> → <input id="endIn" type="date"><button id="setDates" style="border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 10px;font-size:13px">保存</button></div>
+    <div class="setrow" style="margin-top:8px">出行 <input id="startIn" type="date" style="width:142px"> → <input id="endIn" type="date" style="width:142px"><button id="setDates" style="border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 10px;font-size:13px">保存</button></div>
     <div style="font-size:12px;color:var(--gray);margin-top:4px" id="dateRange"></div>
     <div style="font-size:12px;color:var(--gray);margin-top:6px">改完点保存,顶部预算/剩余/进度条会自动更新</div>
   </div>
