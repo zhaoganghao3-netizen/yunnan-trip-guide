@@ -90,12 +90,15 @@ body{padding-bottom:16px}
 #setDates{padding:7px;font-size:13px}
 .foot{display:none}.setrow input[type=number]{flex:0 0 90px;width:90px}
 #setDates{height:32px;padding:0;font-size:12.5px;margin-top:8px}.setrow input[type=number]{flex:0 0 96px;width:96px;font-size:14px;padding:6px 8px;appearance:textfield;-webkit-appearance:none;text-align:center}
-.setrow input[type=number]::-webkit-outer-spin-button,.setrow input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}</style>
+.setrow input[type=number]::-webkit-outer-spin-button,.setrow input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.setrow input{height:34px;padding:0 10px;font-size:14px;line-height:34px;border-radius:8px}
+.setrow input[type=date]{height:34px;line-height:34px;font-size:14px}
+#setDates{height:34px;line-height:34px;padding:0;font-size:13px}
+#subTitle{font-size:12px;opacity:.9}</style>
 </head>
 <body>
 <header>
   <h1>🧾 旅行记账</h1>
-  <div class="sub">云南 12/3-12/11 · 数据只存在这台手机</div>
+  <div class="sub" id="subTitle">云南 12/1-12/9 · 数据只存在这台手机</div>
 </header>
 <div class="wrap">
 
@@ -285,7 +288,7 @@ function render(){
   if(!st.end)st.end='2026-12-09';
   document.getElementById('startIn').value=st.start;
   document.getElementById('endIn').value=st.end;
-  document.getElementById('dateRange').textContent='当前行程:'+st.start+' 至 '+st.end;
+  document.getElementById('dateRange').textContent='当前行程:'+st.start+' 至 '+st.end;(function(){function f(x){var a=x.split('-');return parseInt(a[1])+'/'+parseInt(a[2]);}document.getElementById('subTitle').textContent='云南 '+f(st.start)+'-'+f(st.end)+' · 数据只存在这台手机';})();
 }
 
 document.getElementById('save').onclick=()=>{
