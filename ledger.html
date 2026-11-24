@@ -64,8 +64,8 @@ input,select,button{font-family:inherit}
 .foot{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 12px calc(8px + env(safe-area-inset-bottom));gap:10px;z-index:20}
 .foot button{flex:1;border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:10px;padding:10px;font-size:13px}
 .setrow{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--gray);flex-wrap:wrap}
-.setrow input[type=number]{width:96px;}
-.setrow input{flex:1;width:100%;font-size:15px;padding:8px 10px;}border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 8px;font-size:14px}
+.setrow input{flex:1;width:100%;font-size:15px;padding:8px 10px;border:1px solid var(--line);background:var(--light);color:var(--txt);border-radius:8px}
+.setrow input[type=number]{flex:0 0 96px;width:96px}
 .dlg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
 .dlg.on{display:flex}
 .dlgbox{background:var(--card);border-radius:14px;padding:16px;width:100%;max-width:320px}
