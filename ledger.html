@@ -168,7 +168,7 @@ const RULES=[
 function autoCat(s){for(const [re,c] of RULES){if(re.test(s))return c;}return null;}const KEY='ynLedger_v1';
 const START=new Date('2026-12-03T00:00:00');
 const END=new Date('2026-12-11T23:59:59');
-const DEF={budget:9800,start:'2026-12-01',end:'2026-12-09',items:[]};
+const DEF={budget:10000,start:'2026-12-01',end:'2026-12-09',items:[]};
 
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.items))return d;}catch(e){}return JSON.parse(JSON.stringify(DEF));}
 let st=load();
