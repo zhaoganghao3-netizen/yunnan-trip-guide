@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
-<title>旅行记账 · 云南12月</title>
+<title>旅行记账</title>
 <meta name="theme-color" content="#1a5276">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -100,7 +100,7 @@ body{padding-bottom:16px}
 <body>
 <header>
   <h1>🧾 旅行记账</h1>
-  <div class="sub" id="subTitle">云南 12/1-12/9 · 数据只存在这台手机</div>
+  <div class="sub" id="subTitle">12/1-12/9 · 数据只存在这台手机</div>
 </header>
 <div class="wrap">
 
@@ -145,9 +145,10 @@ body{padding-bottom:16px}
       总预算 <input id="budgetIn" type="number" inputmode="decimal" step="100">
       <button id="setBudget" style="border:1px solid var(--line);background:transparent;color:var(--txt);border-radius:8px;padding:7px 10px;font-size:13px">保存</button>
     </div>
-    <div class="setrow" style="margin-top:10px">出发 <input id="startIn" type="date"></div>
+    <div class="setrow" style="margin-top:10px">名称 <input id="titleIn" type="text" placeholder="行程名,如 云南(可留空)" maxlength="12"></div>
+    <div class="setrow" style="margin-top:6px">出发 <input id="startIn" type="date"></div>
     <div class="setrow" style="margin-top:6px">返程 <input id="endIn" type="date"></div>
-    <button id="setDates" style="display:block;width:100%;box-sizing:border-box;margin:10px 0 0;border:1px solid var(--line);background:var(--light);color:var(--txt);border-radius:8px;padding:8px 0;font-size:13px;font-weight:600">保存日期</button>
+    <button id="setDates" style="display:block;width:100%;box-sizing:border-box;margin:10px 0 0;border:1px solid var(--line);background:var(--light);color:var(--txt);border-radius:8px;padding:8px 0;font-size:13px;font-weight:600">保存行程信息</button>
     <div style="font-size:12px;color:var(--gray);margin-top:4px" id="dateRange"></div>
     <div style="font-size:12px;color:var(--gray);margin-top:6px">改完点保存,顶部预算/剩余/进度条会自动更新</div>
     <div style="display:flex;gap:8px;margin-top:10px">
@@ -191,7 +192,7 @@ const RULES=[
 function autoCat(s){for(const [re,c] of RULES){if(re.test(s))return c;}return null;}const KEY='ynLedger_v1';
 const START=new Date('2026-12-03T00:00:00');
 const END=new Date('2026-12-11T23:59:59');
-const DEF={budget:10000,start:'2026-12-01',end:'2026-12-09',items:[]};
+const DEF={title:'云南',budget:10000,start:'2026-12-01',end:'2026-12-09',items:[]};
 
 function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.items))return d;}catch(e){}return JSON.parse(JSON.stringify(DEF));}
 let st=load();
@@ -288,9 +289,9 @@ function render(){
   document.getElementById('budgetIn').value=st.budget;
   if(!st.start)st.start='2026-12-01';
   if(!st.end)st.end='2026-12-09';
-  document.getElementById('startIn').value=st.start;
+  document.getElementById('titleIn').value=st.title||'';document.getElementById('startIn').value=st.start;
   document.getElementById('endIn').value=st.end;
-  document.getElementById('dateRange').textContent='当前行程:'+st.start+' 至 '+st.end;(function(){function f(x){var a=x.split('-');return parseInt(a[1])+'/'+parseInt(a[2]);}document.getElementById('subTitle').textContent='云南 '+f(st.start)+'-'+f(st.end)+' · 数据只存在这台手机';})();
+  document.getElementById('dateRange').textContent='当前行程:'+st.start+' 至 '+st.end;(function(){function f(x){var a=x.split('-');return parseInt(a[1])+'/'+parseInt(a[2]);}document.getElementById('subTitle').textContent=(st.title?st.title+' ':'')+f(st.start)+'-'+f(st.end)+' · 数据只存在这台手机';})();
 }
 
 document.getElementById('save').onclick=()=>{
@@ -308,7 +309,7 @@ document.getElementById('note').addEventListener('input',e=>{
   if(c){curG=c[0];curS=c[1];renderCats();}
 });
 document.getElementById('setDates').onclick=()=>{
-  const s=document.getElementById('startIn').value, e=document.getElementById('endIn').value;
+  const s=document.getElementById('startIn').value, e=document.getElementById('endIn').value;st.title=document.getElementById('titleIn').value.trim();
   if(!s||!e||s>e){ask('日期不对:出发要早于返程',()=>{});return;}
   st.start=s;st.end=e;save();render();
 };
