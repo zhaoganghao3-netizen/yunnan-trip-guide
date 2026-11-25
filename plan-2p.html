@@ -730,7 +730,7 @@ const dayChips=document.getElementById('dayChips');
 const dayDetail=document.getElementById('dayDetail');
 function todayId(){
   const now=new Date();
-  const d=Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,11,1))/86400000);
+  const d=Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,11,3))/86400000);
   return (d>=0&&d<=8)? d : -1;
 }
 let curDay=(()=>{const t=todayId();return t>=0?t:0;})();
@@ -744,7 +744,7 @@ function navUrl(q, apple){
 }
 function renderChips(){
   const t=todayId();
-  dayChips.innerHTML=DAYS.map(d=>`<div class="day-chip ${d.id===curDay?'active':''} ${d.id===t?'is-today':''}" data-d="${d.id}">${d.emoji} 12/${d.id+1}${d.id===t?' ·今天':''}</div>`).join('');
+  dayChips.innerHTML=DAYS.map(d=>`<div class="day-chip ${d.id===curDay?'active':''} ${d.id===t?'is-today':''}" data-d="${d.id}">${d.emoji} ${(d.title.match(/12\/\d+/)||['12/'+(d.id+1)])[0]}${d.id===t?' ·今天':''}</div>`).join('');
   dayChips.querySelectorAll('.day-chip').forEach(c=>c.onclick=()=>{
     const sl=dayChips.scrollLeft;
     curDay=+c.dataset.d;renderChips();renderDay();
@@ -940,14 +940,14 @@ document.querySelectorAll('.bottom .tab').forEach(t=>t.onclick=()=>{
 
 // ==================== 倒计时 ====================
 function countdown(){
-  const start=new Date('2026-12-01T12:00:00+08:00');
-  const end=new Date('2026-12-09T23:59:59+08:00');
+  const start=new Date('2026-12-03T12:00:00+08:00');
+  const end=new Date('2026-12-11T23:59:59+08:00');
   const now=new Date();
   const el=document.getElementById('countdown');
   if(now<start){
     el.textContent=`距离出发还有 ${Math.ceil((start-now)/86400000)} 天`;
   }else if(now<=end){
-    const d=Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,11,1))/86400000);
+    const d=Math.floor((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,11,3))/86400000);
     el.textContent=`行程 Day ${d} · 12月${now.getDate()}日`;
   }else{
     el.textContent='行程已结束,愿回忆常新';
