@@ -1,0 +1,16 @@
+{
+  "name": "云南攻略 · 昆明进丽江出(2人)",
+  "short_name": "云南2人",
+  "description": "2026年12月 昆明进丽江出 9天2人行程:大理·丽江·香格里拉·梅里",
+  "start_url": "plan-2p-km.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#10161c",
+  "theme_color": "#1a5276",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
