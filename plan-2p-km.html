@@ -213,7 +213,7 @@ table.bd2 th{background:var(--light);color:var(--blue)}
       <div class="hd">🚄 车票购买总表(照着买)</div>
       <div class="bd">
         <table class="bd2" id="trainTable"></table>
-        <div style="font-size:12px;color:var(--gray);margin-top:8px">票价(二等):金华⇄杭州东¥60-100;全程自驾,不坐动车</div>
+        <div style="font-size:12px;color:var(--gray);margin-top:8px">票价(二等):金华⇄杭州东¥60-100;昆明→大理¥145</div>
       </div>
     </div>
     <div class="card">
@@ -879,7 +879,7 @@ renderCheck();
 // ==================== 车票购买总表 ====================
 const TRAINS=[
 ['12/1','金华→杭州东','09:30-10:00','已开售'],
-['12/2','昆明→大理','12:30','已开售'],
+['12/1','昆明→大理','19:30','已开售'],
 ['12/9','杭州东→金华','18:30-19:00','11/26开售'],
 ];
 document.getElementById('trainTable').innerHTML='<tr><th>日期</th><th>区间</th><th>买几点</th><th>开售日</th></tr>'+TRAINS.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('');
